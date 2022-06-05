@@ -1,7 +1,13 @@
+using AgendaVeterinaria1.Context;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+var services = builder.Services;
+services.AddControllersWithViews();
+services.AddDbContext<AgendaDBContext>(options => options.UseSqlServer(@"filename=DB/AgendaVeterinaria.db"));
+//builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
@@ -25,3 +31,7 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+
+
+
+

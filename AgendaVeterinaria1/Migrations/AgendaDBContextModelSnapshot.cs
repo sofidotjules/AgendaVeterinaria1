@@ -53,7 +53,7 @@ namespace AgendaVeterinaria1.Migrations
 
                     b.HasIndex("ProfesionalIDProfesional");
 
-                    b.ToTable("Agenda");
+                    b.ToTable("Agendas");
                 });
 
             modelBuilder.Entity("AgendaVeterinaria1.Models.Cliente", b =>
@@ -166,9 +166,6 @@ namespace AgendaVeterinaria1.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IDTurno"), 1L, 1);
 
-                    b.Property<int>("ClienteIDCliente")
-                        .HasColumnType("int");
-
                     b.Property<string>("Detalle")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -186,18 +183,15 @@ namespace AgendaVeterinaria1.Migrations
                     b.Property<int>("IDProfesional")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProfesionalIDProfesional")
-                        .HasColumnType("int");
-
                     b.Property<string>("TipoDeTurno")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("IDTurno");
 
-                    b.HasIndex("ClienteIDCliente");
+                    b.HasIndex("IDCliente");
 
-                    b.HasIndex("ProfesionalIDProfesional");
+                    b.HasIndex("IDProfesional");
 
                     b.ToTable("Turnos");
                 });
@@ -271,14 +265,14 @@ namespace AgendaVeterinaria1.Migrations
                 {
                     b.HasOne("AgendaVeterinaria1.Models.Cliente", "Cliente")
                         .WithMany()
-                        .HasForeignKey("ClienteIDCliente")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("IDCliente")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("AgendaVeterinaria1.Models.Profesional", "Profesional")
                         .WithMany()
-                        .HasForeignKey("ProfesionalIDProfesional")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("IDProfesional")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Cliente");

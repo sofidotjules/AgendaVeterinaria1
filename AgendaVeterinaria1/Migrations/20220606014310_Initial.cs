@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AgendaVeterinaria1.Migrations
 {
-    public partial class CreateAgendaVeterinariaDB : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -94,7 +94,7 @@ namespace AgendaVeterinaria1.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Agenda",
+                name: "Agendas",
                 columns: table => new
                 {
                     IDAgenda = table.Column<int>(type: "int", nullable: false)
@@ -108,9 +108,9 @@ namespace AgendaVeterinaria1.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Agenda", x => x.IDAgenda);
+                    table.PrimaryKey("PK_Agendas", x => x.IDAgenda);
                     table.ForeignKey(
-                        name: "FK_Agenda_Profesionales_ProfesionalIDProfesional",
+                        name: "FK_Agendas_Profesionales_ProfesionalIDProfesional",
                         column: x => x.ProfesionalIDProfesional,
                         principalTable: "Profesionales",
                         principalColumn: "IDProfesional",
@@ -128,30 +128,26 @@ namespace AgendaVeterinaria1.Migrations
                     Fecha = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Horario = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IDCliente = table.Column<int>(type: "int", nullable: false),
-                    ClienteIDCliente = table.Column<int>(type: "int", nullable: false),
-                    IDProfesional = table.Column<int>(type: "int", nullable: false),
-                    ProfesionalIDProfesional = table.Column<int>(type: "int", nullable: false)
+                    IDProfesional = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Turnos", x => x.IDTurno);
                     table.ForeignKey(
-                        name: "FK_Turnos_Clientes_ClienteIDCliente",
-                        column: x => x.ClienteIDCliente,
+                        name: "FK_Turnos_Clientes_IDCliente",
+                        column: x => x.IDCliente,
                         principalTable: "Clientes",
-                        principalColumn: "IDCliente",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "IDCliente");
                     table.ForeignKey(
-                        name: "FK_Turnos_Profesionales_ProfesionalIDProfesional",
-                        column: x => x.ProfesionalIDProfesional,
+                        name: "FK_Turnos_Profesionales_IDProfesional",
+                        column: x => x.IDProfesional,
                         principalTable: "Profesionales",
-                        principalColumn: "IDProfesional",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "IDProfesional");
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Agenda_ProfesionalIDProfesional",
-                table: "Agenda",
+                name: "IX_Agendas_ProfesionalIDProfesional",
+                table: "Agendas",
                 column: "ProfesionalIDProfesional");
 
             migrationBuilder.CreateIndex(
@@ -170,20 +166,20 @@ namespace AgendaVeterinaria1.Migrations
                 column: "UsuarioIDUsuario");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Turnos_ClienteIDCliente",
+                name: "IX_Turnos_IDCliente",
                 table: "Turnos",
-                column: "ClienteIDCliente");
+                column: "IDCliente");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Turnos_ProfesionalIDProfesional",
+                name: "IX_Turnos_IDProfesional",
                 table: "Turnos",
-                column: "ProfesionalIDProfesional");
+                column: "IDProfesional");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Agenda");
+                name: "Agendas");
 
             migrationBuilder.DropTable(
                 name: "Mascotas");

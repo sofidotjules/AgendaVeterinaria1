@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AgendaVeterinaria1.Models
 {
@@ -7,9 +8,9 @@ namespace AgendaVeterinaria1.Models
         [Key]
         public int IDProfesional { get; set; }
 
-        public int IDUsuario { get; set; }
+        [ForeignKey("IDProfesional")]
         public Usuario Usuario { get; set; }
-
+        public int IDUsuario { get; set; }
         public string Matricula { get; set; }
 
         public string Nombre { get; set; }

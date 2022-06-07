@@ -58,13 +58,13 @@ namespace AgendaVeterinaria1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("IDProfesional,IDUsuario,Matricula,Nombre,DNI,TipoProfesional,Email")] Profesional profesional)
         {
-            if (ModelState.IsValid)
-            {
+            //if (ModelState.IsValid)
+            //{
                 _context.Add(profesional);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            }
-            return View(profesional);
+            //}
+            //return View(profesional);
         }
 
         // GET: Profesionals/Edit/5

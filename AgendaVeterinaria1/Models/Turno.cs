@@ -8,7 +8,7 @@ namespace AgendaVeterinaria1.Models
         [Key]
         public int IDTurno { get; set; }
         public string TipoDeTurno { get; set; }
-        public string  Detalle { get; set; }
+        public string? Detalle { get; set; }
         public DateTime Fecha { get; set; }
         public string Horario { get; set; }
 

@@ -28,7 +28,12 @@ namespace AgendaVeterinaria1.Context
             .HasOne(x => x.Profesional).WithMany().HasForeignKey(x => x.IDProfesional).OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<Turno>()
             .HasOne(x => x.Mascota).WithMany().HasForeignKey(x => x.IDMascota).OnDelete(DeleteBehavior.NoAction);
-
+            modelBuilder.Entity<Profesional>()
+            .HasOne(x => x.Usuario).WithMany().HasForeignKey(x => x.IDUsuario);
+            modelBuilder.Entity<Cliente>()
+            .HasOne(x => x.Usuario).WithMany().HasForeignKey(x => x.IDUsuario);
+            modelBuilder.Entity<Agenda>()
+            .HasOne(x => x.Profesional).WithMany().HasForeignKey(x => x.IDProfesional);
         }
 //        protected override void OnConfiguring(DbContextOptionsBuilder
 //       optionsBuilder)

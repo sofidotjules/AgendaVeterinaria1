@@ -37,7 +37,6 @@ namespace AgendaVeterinaria1.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("FranjaHoraria")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("IDProfesional")
@@ -94,7 +93,6 @@ namespace AgendaVeterinaria1.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Detalle")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nombre")
@@ -115,24 +113,24 @@ namespace AgendaVeterinaria1.Migrations
             modelBuilder.Entity("AgendaVeterinaria1.Models.Profesional", b =>
                 {
                     b.Property<int>("IDProfesional")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IDProfesional"), 1L, 1);
 
                     b.Property<int>("DNI")
                         .HasColumnType("int");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("IDUsuario")
                         .HasColumnType("int");
 
                     b.Property<string>("Matricula")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nombre")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TipoProfesional")
@@ -140,6 +138,8 @@ namespace AgendaVeterinaria1.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("IDProfesional");
+
+                    b.HasIndex("IDUsuario");
 
                     b.ToTable("Profesionales");
                 });
@@ -153,7 +153,6 @@ namespace AgendaVeterinaria1.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IDTurno"), 1L, 1);
 
                     b.Property<string>("Detalle")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Fecha")
@@ -191,15 +190,12 @@ namespace AgendaVeterinaria1.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IDUsuario"), 1L, 1);
 
                     b.Property<string>("Contraseña")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NombreUsuario")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TipoDeUsuario")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("IDUsuario");
@@ -240,7 +236,7 @@ namespace AgendaVeterinaria1.Migrations
                 {
                     b.HasOne("AgendaVeterinaria1.Models.Usuario", "Usuario")
                         .WithMany()
-                        .HasForeignKey("IDProfesional")
+                        .HasForeignKey("IDUsuario")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

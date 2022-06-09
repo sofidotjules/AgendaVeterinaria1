@@ -56,7 +56,7 @@ namespace AgendaVeterinaria1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IDProfesional,IDUsuario,Matricula,Nombre,DNI,TipoProfesional,Email")] Profesional profesional)
+        public async Task<IActionResult> Create([Bind("IDProfesional,Matricula,Nombre,DNI,TipoProfesional,Email")] Profesional profesional)
         {
             if (ModelState.IsValid)
             {
@@ -88,7 +88,7 @@ namespace AgendaVeterinaria1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IDProfesional,IDUsuario,Matricula,Nombre,DNI,TipoProfesional,Email")] Profesional profesional)
+        public async Task<IActionResult> Edit(int id, [Bind("IDProfesional,Matricula,Nombre,DNI,TipoProfesional,Email")] Profesional profesional)
         {
             if (id != profesional.IDProfesional)
             {

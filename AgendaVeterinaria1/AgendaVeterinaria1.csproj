@@ -8,9 +8,18 @@
 
   <ItemGroup>
     <Compile Remove="DB\**" />
+    <Compile Remove="Views\Usuario\**" />
     <Content Remove="DB\**" />
+    <Content Remove="Views\Usuario\**" />
     <EmbeddedResource Remove="DB\**" />
+    <EmbeddedResource Remove="Views\Usuario\**" />
     <None Remove="DB\**" />
+    <None Remove="Views\Usuario\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Controllers\UsuarioController.cs" />
+    <Compile Remove="Models\Usuario.cs" />
   </ItemGroup>
 
   <ItemGroup>

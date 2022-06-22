@@ -1,10 +1,11 @@
 ﻿@model AgendaVeterinaria1.Models.Profesional
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Crear";
+    List<Especialidad> especialidades = ViewBag.Especialidades;
 }
 
-<h1>Create</h1>
+<h1>Crear</h1>
 
 <h4>Profesional</h4>
 <hr />
@@ -12,11 +13,6 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="IDUsuario" class="control-label"></label>
-                <input asp-for="IDUsuario" class="form-control" />
-                <span asp-validation-for="IDUsuario" class="text-danger"></span>
-            </div>
             <div class="form-group">
                 <label asp-for="Matricula" class="control-label"></label>
                 <input asp-for="Matricula" class="form-control" />
@@ -33,9 +29,13 @@
                 <span asp-validation-for="DNI" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="TipoProfesional" class="control-label">Tipo de Profesional</label>
-                <input asp-for="TipoProfesional" class="form-control" />
+                <label asp-for="TipoProfesional" class="control-label"></label>
+                <select asp-for="TipoProfesional" class="form-control">
+                <option value="Veterinaria">Veterinaria</option>
+                <option value="Peluqueria">Peluqueria</option>
+                </select>
                 <span asp-validation-for="TipoProfesional" class="text-danger"></span>
+
             </div>
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
@@ -43,14 +43,30 @@
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Guardar profesional" class="btn btn-primary" />
+                <label asp-for="Contrasenia" class="control-label"></label>
+                <input asp-for="Contrasenia" class="form-control" type="password"/>
+                <span asp-validation-for="Contrasenia" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Especialidades" class="control-label"></label>
+                <select asp-for="Especialidades" class="form-control" style="height:250px" multiple>
+                @foreach(var item in especialidades){
+                    <option value="@item.IDEspecialidad"> @item.Descripcion</option>
+                }
+                </select>
+                <span asp-validation-for="Especialidades" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <br/>
+                <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <br/>
+    <a asp-action="Index">Volver</a>
 </div>
 
 @section Scripts {

@@ -4,6 +4,7 @@ using AgendaVeterinaria1.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AgendaVeterinaria1.Migrations
 {
     [DbContext(typeof(AgendaDBContext))]
-    partial class AgendaDBContextModelSnapshot : ModelSnapshot
+    [Migration("20220609211528_Initial2")]
+    partial class Initial2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -60,10 +62,6 @@ namespace AgendaVeterinaria1.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IDCliente"), 1L, 1);
 
-                    b.Property<string>("Contrasenia")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("DNI")
                         .HasColumnType("int");
 
@@ -71,11 +69,16 @@ namespace AgendaVeterinaria1.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("IDUsuario")
+                        .HasColumnType("int");
+
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("IDCliente");
+
+                    b.HasIndex("IDUsuario");
 
                     b.ToTable("Clientes");
                 });
@@ -133,16 +136,14 @@ namespace AgendaVeterinaria1.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IDProfesional"), 1L, 1);
 
-                    b.Property<string>("Contrasenia")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("DNI")
                         .HasColumnType("int");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("IDUsuario")
+                        .HasColumnType("int");
 
                     b.Property<string>("Matricula")
                         .HasColumnType("nvarchar(max)");
@@ -155,6 +156,8 @@ namespace AgendaVeterinaria1.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("IDProfesional");
+
+                    b.HasIndex("IDUsuario");
 
                     b.ToTable("Profesionales");
                 });
@@ -196,6 +199,28 @@ namespace AgendaVeterinaria1.Migrations
                     b.ToTable("Turnos");
                 });
 
+            modelBuilder.Entity("AgendaVeterinaria1.Models.Usuario", b =>
+                {
+                    b.Property<int>("IDUsuario")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IDUsuario"), 1L, 1);
+
+                    b.Property<string>("Contraseña")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NombreUsuario")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TipoDeUsuario")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("IDUsuario");
+
+                    b.ToTable("Usuarios");
+                });
+
             modelBuilder.Entity("EspecialidadProfesional", b =>
                 {
                     b.Property<int>("EspecialidadesIDEspecialidad")
@@ -222,11 +247,33 @@ namespace AgendaVeterinaria1.Migrations
                     b.Navigation("Profesional");
                 });
 
+            modelBuilder.Entity("AgendaVeterinaria1.Models.Cliente", b =>
+                {
+                    b.HasOne("AgendaVeterinaria1.Models.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("IDUsuario")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
+                });
+
             modelBuilder.Entity("AgendaVeterinaria1.Models.Mascota", b =>
                 {
                     b.HasOne("AgendaVeterinaria1.Models.Cliente", null)
                         .WithMany("Mascotas")
                         .HasForeignKey("ClienteIDCliente");
+                });
+
+            modelBuilder.Entity("AgendaVeterinaria1.Models.Profesional", b =>
+                {
+                    b.HasOne("AgendaVeterinaria1.Models.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("IDUsuario")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("AgendaVeterinaria1.Models.Turno", b =>

@@ -48,6 +48,7 @@ namespace AgendaVeterinaria1.Controllers
         // GET: Profesionals/Create
         public IActionResult Create()
         {
+            ViewBag.Especialidades = _context.Especialidades.ToList();
             return View();
         }
 
@@ -56,20 +57,24 @@ namespace AgendaVeterinaria1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IDProfesional,IDUsuario,Matricula,Nombre,DNI,TipoProfesional,Email")] Profesional profesional)
+        public async Task<IActionResult> Create([Bind("IDProfesional,Matricula,Nombre,DNI,TipoProfesional,Email,Contrasenia")] Profesional profesional, IFormCollection formCollection)
         {
-            //if (ModelState.IsValid)
-            //{
+            var especialidades = formCollection["Especialidades"];
+            ModelState.Remove("Especialidades");
+
+            if (ModelState.IsValid)
+            {
                 _context.Add(profesional);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            //}
-            //return View(profesional);
+            }
+            return View(profesional);
         }
 
         // GET: Profesionals/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            ViewBag.Especialidades = _context.Especialidades.ToList();
             if (id == null || _context.Profesionales == null)
             {
                 return NotFound();
@@ -88,12 +93,15 @@ namespace AgendaVeterinaria1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IDProfesional,IDUsuario,Matricula,Nombre,DNI,TipoProfesional,Email")] Profesional profesional)
+        public async Task<IActionResult> Edit(int id, [Bind("IDProfesional,Matricula,Nombre,DNI,TipoProfesional,Email")] Profesional profesional, IFormCollection formCollection)
         {
             if (id != profesional.IDProfesional)
             {
                 return NotFound();
             }
+
+            var especialidades = formCollection["Especialidades"];
+            ModelState.Remove("Especialidades");
 
             if (ModelState.IsValid)
             {
@@ -158,6 +166,12 @@ namespace AgendaVeterinaria1.Controllers
         private bool ProfesionalExists(int id)
         {
           return (_context.Profesionales?.Any(e => e.IDProfesional == id)).GetValueOrDefault();
+        }
+
+        public IActionResult GoToAgenda(int id) 
+        {
+
+            return RedirectToAction("Create", "Agenda");
         }
     }
 }

@@ -22,7 +22,7 @@ namespace AgendaVeterinaria1.Controllers
         // GET: Turno
         public async Task<IActionResult> Index()
         {
-            var agendaDBContext = _context.Turnos.Include(t => t.Cliente).Include(t => t.Profesional);
+            var agendaDBContext = _context.Turnos.Include(t => t.Mascota).Include(t => t.Profesional);
             return View(await agendaDBContext.ToListAsync());
         }
 
@@ -35,7 +35,7 @@ namespace AgendaVeterinaria1.Controllers
             }
 
             var turno = await _context.Turnos
-                .Include(t => t.Cliente)
+                .Include(t => t.Mascota)
                 .Include(t => t.Profesional)
                 .FirstOrDefaultAsync(m => m.IDTurno == id);
             if (turno == null)
@@ -67,7 +67,7 @@ namespace AgendaVeterinaria1.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IDCliente"] = new SelectList(_context.Clientes, "IDCliente", "IDCliente", turno.IDCliente);
+            ViewData["IDCliente"] = new SelectList(_context.Clientes, "IDCliente", "IDCliente", turno.IDMascota);
             ViewData["IDProfesional"] = new SelectList(_context.Profesionales, "IDProfesional", "IDProfesional", turno.IDProfesional);
             return View(turno);
         }
@@ -85,7 +85,7 @@ namespace AgendaVeterinaria1.Controllers
             {
                 return NotFound();
             }
-            ViewData["IDCliente"] = new SelectList(_context.Clientes, "IDCliente", "IDCliente", turno.IDCliente);
+            ViewData["IDCliente"] = new SelectList(_context.Clientes, "IDCliente", "IDCliente", turno.IDMascota);
             ViewData["IDProfesional"] = new SelectList(_context.Profesionales, "IDProfesional", "IDProfesional", turno.IDProfesional);
             return View(turno);
         }
@@ -122,7 +122,7 @@ namespace AgendaVeterinaria1.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IDCliente"] = new SelectList(_context.Clientes, "IDCliente", "IDCliente", turno.IDCliente);
+            ViewData["IDCliente"] = new SelectList(_context.Clientes, "IDCliente", "IDCliente", turno.IDMascota);
             ViewData["IDProfesional"] = new SelectList(_context.Profesionales, "IDProfesional", "IDProfesional", turno.IDProfesional);
             return View(turno);
         }
@@ -136,7 +136,7 @@ namespace AgendaVeterinaria1.Controllers
             }
 
             var turno = await _context.Turnos
-                .Include(t => t.Cliente)
+                .Include(t => t.Mascota)
                 .Include(t => t.Profesional)
                 .FirstOrDefaultAsync(m => m.IDTurno == id);
             if (turno == null)

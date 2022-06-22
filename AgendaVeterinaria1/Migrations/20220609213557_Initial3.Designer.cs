@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AgendaVeterinaria1.Migrations
 {
     [DbContext(typeof(AgendaDBContext))]
-    [Migration("20220606014310_Initial")]
-    partial class Initial
+    [Migration("20220609213557_Initial3")]
+    partial class Initial3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -39,13 +39,9 @@ namespace AgendaVeterinaria1.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("FranjaHoraria")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("IDProfesional")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProfesionalIDProfesional")
                         .HasColumnType("int");
 
                     b.Property<int>("TopeDeTurnos")
@@ -53,7 +49,7 @@ namespace AgendaVeterinaria1.Migrations
 
                     b.HasKey("IDAgenda");
 
-                    b.HasIndex("ProfesionalIDProfesional");
+                    b.HasIndex("IDProfesional");
 
                     b.ToTable("Agendas");
                 });
@@ -66,6 +62,10 @@ namespace AgendaVeterinaria1.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IDCliente"), 1L, 1);
 
+                    b.Property<string>("Contraseña")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("DNI")
                         .HasColumnType("int");
 
@@ -73,21 +73,29 @@ namespace AgendaVeterinaria1.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("IDUsuario")
-                        .HasColumnType("int");
-
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UsuarioIDUsuario")
-                        .HasColumnType("int");
-
                     b.HasKey("IDCliente");
 
-                    b.HasIndex("UsuarioIDUsuario");
-
                     b.ToTable("Clientes");
+                });
+
+            modelBuilder.Entity("AgendaVeterinaria1.Models.Especialidad", b =>
+                {
+                    b.Property<int>("IDEspecialidad")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IDEspecialidad"), 1L, 1);
+
+                    b.Property<string>("Descripcion")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("IDEspecialidad");
+
+                    b.ToTable("Especialidades");
                 });
 
             modelBuilder.Entity("AgendaVeterinaria1.Models.Mascota", b =>
@@ -102,7 +110,6 @@ namespace AgendaVeterinaria1.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Detalle")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nombre")
@@ -128,6 +135,10 @@ namespace AgendaVeterinaria1.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IDProfesional"), 1L, 1);
 
+                    b.Property<string>("Contraseña")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("DNI")
                         .HasColumnType("int");
 
@@ -135,27 +146,17 @@ namespace AgendaVeterinaria1.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("IDUsuario")
-                        .HasColumnType("int");
-
                     b.Property<string>("Matricula")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nombre")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TipoProfesional")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UsuarioIDUsuario")
-                        .HasColumnType("int");
-
                     b.HasKey("IDProfesional");
-
-                    b.HasIndex("UsuarioIDUsuario");
 
                     b.ToTable("Profesionales");
                 });
@@ -169,7 +170,6 @@ namespace AgendaVeterinaria1.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IDTurno"), 1L, 1);
 
                     b.Property<string>("Detalle")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Fecha")
@@ -179,7 +179,7 @@ namespace AgendaVeterinaria1.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("IDCliente")
+                    b.Property<int>("IDMascota")
                         .HasColumnType("int");
 
                     b.Property<int>("IDProfesional")
@@ -191,58 +191,37 @@ namespace AgendaVeterinaria1.Migrations
 
                     b.HasKey("IDTurno");
 
-                    b.HasIndex("IDCliente");
+                    b.HasIndex("IDMascota");
 
                     b.HasIndex("IDProfesional");
 
                     b.ToTable("Turnos");
                 });
 
-            modelBuilder.Entity("AgendaVeterinaria1.Models.Usuario", b =>
+            modelBuilder.Entity("EspecialidadProfesional", b =>
                 {
-                    b.Property<int>("IDUsuario")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("EspecialidadesIDEspecialidad")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IDUsuario"), 1L, 1);
+                    b.Property<int>("ProfesionalesIDProfesional")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Contraseña")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.HasKey("EspecialidadesIDEspecialidad", "ProfesionalesIDProfesional");
 
-                    b.Property<string>("NombreUsuario")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.HasIndex("ProfesionalesIDProfesional");
 
-                    b.Property<string>("TipoDeUsuario")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("IDUsuario");
-
-                    b.ToTable("Usuarios");
+                    b.ToTable("EspecialidadProfesional");
                 });
 
             modelBuilder.Entity("AgendaVeterinaria1.Models.Agenda", b =>
                 {
                     b.HasOne("AgendaVeterinaria1.Models.Profesional", "Profesional")
                         .WithMany()
-                        .HasForeignKey("ProfesionalIDProfesional")
+                        .HasForeignKey("IDProfesional")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Profesional");
-                });
-
-            modelBuilder.Entity("AgendaVeterinaria1.Models.Cliente", b =>
-                {
-                    b.HasOne("AgendaVeterinaria1.Models.Usuario", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("UsuarioIDUsuario")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("AgendaVeterinaria1.Models.Mascota", b =>
@@ -252,22 +231,11 @@ namespace AgendaVeterinaria1.Migrations
                         .HasForeignKey("ClienteIDCliente");
                 });
 
-            modelBuilder.Entity("AgendaVeterinaria1.Models.Profesional", b =>
-                {
-                    b.HasOne("AgendaVeterinaria1.Models.Usuario", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("UsuarioIDUsuario")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Usuario");
-                });
-
             modelBuilder.Entity("AgendaVeterinaria1.Models.Turno", b =>
                 {
-                    b.HasOne("AgendaVeterinaria1.Models.Cliente", "Cliente")
+                    b.HasOne("AgendaVeterinaria1.Models.Mascota", "Mascota")
                         .WithMany()
-                        .HasForeignKey("IDCliente")
+                        .HasForeignKey("IDMascota")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
@@ -277,9 +245,24 @@ namespace AgendaVeterinaria1.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("Cliente");
+                    b.Navigation("Mascota");
 
                     b.Navigation("Profesional");
+                });
+
+            modelBuilder.Entity("EspecialidadProfesional", b =>
+                {
+                    b.HasOne("AgendaVeterinaria1.Models.Especialidad", null)
+                        .WithMany()
+                        .HasForeignKey("EspecialidadesIDEspecialidad")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AgendaVeterinaria1.Models.Profesional", null)
+                        .WithMany()
+                        .HasForeignKey("ProfesionalesIDProfesional")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("AgendaVeterinaria1.Models.Cliente", b =>

@@ -1,0 +1,257 @@
+﻿
+@{
+    ViewData["Title"] = "Solicitar Turno";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "_DevExtremeLayout";
+}
+ 
+<style>
+.widget-container {
+    margin-right: 320px;
+}
+
+#calendar-container {
+    margin: auto;
+}
+
+.dx-calendar-cell:not(.dx-calendar-other-month) .weekend,
+.dx-calendar-cell:not(.dx-calendar-other-month) .holyday {
+    text-shadow: none;
+    font-weight: bold;
+}
+
+.dx-calendar-cell:not(.dx-calendar-other-month) .weekend {
+    color: #3030FF;
+}
+
+.dx-state-disabled.dx-calendar .dx-calendar-cell:not(.dx-calendar-other-month) .weekend {
+    color: #8080FF;
+}
+
+.dx-calendar-cell:not(.dx-calendar-other-month) .holyday {
+    color: #FF3030;
+}
+
+.dx-state-disabled.dx-calendar .dx-calendar-cell:not(.dx-calendar-other-month) .holyday {
+    color: #FF8080;
+}
+
+.options {
+    padding: 20px;
+    background-color: rgba(191, 191, 191, 0.15);
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 260px;
+}
+
+.caption {
+    font-weight: 500;
+    font-size: 18px;
+}
+
+.option {
+    margin-top: 10px;
+}
+
+.dx-calendar {
+    width: 500px;
+    min-width: 282px;
+    height: 400px;
+    min-height: 268.6px;
+    background-color: #fff;
+    -webkit-tap-highlight-color: transparent;
+    outline: 0;
+    border: 1px solid transparent;
+}
+</style>
+<div class="container">
+    <div class="row">
+       <div class="col-md-3">
+           <span></span>
+       </div> 
+       <div class="col-md-4">
+        <div id="calendar-demo">
+    <div class="widget-container">
+        @(Html.DevExtreme().Calendar()
+            .ID("calendar-container")
+            .Value(DateTime.Now)
+            .Disabled(false)
+            .ZoomLevel(CalendarZoomLevel.Month)
+            .OnValueChanged("calendar_valueChanged").OnInitialized("OnInitialized")  
+        )
+    </div>
+
+    <div class="options" hidden>
+        <div class="caption">Options</div>
+        <div class="option">
+            @(Html.DevExtreme().CheckBox()
+                .Text("Specified min value")
+                .OnValueChanged("minValue_changed")
+            )
+        </div>
+        <div class="option">
+            @(Html.DevExtreme().CheckBox()
+                .Text("Specified max value")
+                .OnValueChanged("maxValue_changed")
+                
+            )
+        </div>
+        
+        <div class="option">
+            @(Html.DevExtreme().CheckBox()
+                .Text("Disable weekend")
+                .OnValueChanged("disabledDates_changed")
+               
+            )
+        </div>
+        <div class="option">
+            @(Html.DevExtreme().CheckBox()
+                .Text("Monday as the first day of a week")
+                .OnValueChanged("firstDayOfWeek_changed")
+            )
+        </div>
+        <div class="option">
+            @(Html.DevExtreme().CheckBox()
+                .Text("Use the Custom Cell Template")
+                .Value(false)
+                .OnValueChanged("useCustomTemplate")
+            )
+        </div>
+        <div class="option">
+            @(Html.DevExtreme().CheckBox()
+                .Text("Disabled")
+                .OnValueChanged("disabledState_changed")
+            )
+        </div>
+        <div class="option">
+            <span>Zoom level</span>
+            @(Html.DevExtreme().SelectBox()
+                .DataSource(new[] {
+                    "month",
+                    "year",
+                    "decade",
+                    "century"
+                })
+                .Value("month")
+                .OnValueChanged("zoomLevel_changed")
+            )
+        </div>
+        <div class="option">
+            <span>Selected date</span>
+            @(Html.DevExtreme().DateBox()
+                .ID("selected-date")
+                .Value(DateTime.Now)
+                .Width("100%")
+                .OnValueChanged("selectedDate_changed")
+            )
+        </div>
+    </div>
+</div>
+
+       </div> 
+       <div class="col-md-3">
+           <span></span>
+       </div> 
+    </div>
+</div>
+
+<script>
+    DevExpress.localization.locale(navigator.language);
+    var date = new Date().getTime();
+
+    function OnInitialized(s,e){  
+      disabledDates_changed(true);
+      firstDayOfWeek_changed(false)
+     }  
+    
+    function getCalendarInstance() {
+        return $("#calendar-container").dxCalendar("instance");
+    }
+
+    function isWeekend(date) {
+        var day = date.getDay();
+
+        return day === 0 || day === 6;
+    }
+
+    function getCellTemplate(data) {
+        var cssClass = "";
+
+        if (data.view === 'month') {
+            if (isWeekend(data.date))
+                cssClass = "weekend";
+
+            $.each([[1, 0], [4, 6], [25, 11]], function (_, item) {
+                if(data.date.getDate() === item[0] && data.date.getMonth() === item[1]) {
+                    cssClass = "holyday";
+                    return false;
+                }
+            });
+        }
+
+        return "<span class='" + cssClass + "'>" + data.text + "</span>";
+    }
+
+    function calendar_valueChanged(data) {
+        $("#selected-date").dxDateBox("instance").option("value", data.value);
+    }
+
+    function minValue_changed(data) {
+        var calendar = getCalendarInstance();
+        if(data.value) {
+            calendar.option("min", new Date(date - 1000 * 60 * 60 * 24 * 3));
+        } else {
+            calendar.option("min", null);
+        }
+    }
+
+    function maxValue_changed(data) {
+        var calendar = getCalendarInstance();
+        if(data.value) {
+            calendar.option("max", new Date(date + 1000 * 60 * 60 * 24 * 3));
+        } else {
+            calendar.option("max", null);
+        }
+    }
+
+    function disabledDates_changed(data) {
+        var calendar = getCalendarInstance();
+       // if (data.value) {
+           calendar.option("disabledDates", function (data) {
+                return isWeekend(data.date);
+            });
+       // } else {
+        //    calendar.option("disabledDates", null);
+       // }
+    }
+
+    function firstDayOfWeek_changed(data) {
+        var calendar = getCalendarInstance();
+        if(data.value) {
+            calendar.option("firstDayOfWeek", 1);
+        } else {
+            calendar.option("firstDayOfWeek", 0);
+        }
+    }
+
+    function useCustomTemplate(data) {
+        getCalendarInstance().option("cellTemplate", data.value ? getCellTemplate : "cell");
+    }
+
+    function disabledState_changed(data) {
+        getCalendarInstance().option("disabled", data.value);
+    }
+
+    function zoomLevel_changed(data) {
+        getCalendarInstance().option("zoomLevel", data.value);
+    }
+
+    function selectedDate_changed(data) {
+         
+        getCalendarInstance().option("value", data.value);
+        
+    }
+
+</script>

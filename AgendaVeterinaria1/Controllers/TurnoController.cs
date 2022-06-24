@@ -170,5 +170,12 @@ namespace AgendaVeterinaria1.Controllers
         {
           return (_context.Turnos?.Any(e => e.IDTurno == id)).GetValueOrDefault();
         }
+
+        public IActionResult SolicitarTurno()
+        {
+            //ViewData["IDCliente"] = new SelectList(_context.Clientes, "IDCliente", "IDCliente");
+           // ViewData["IDProfesional"] = new SelectList(_context.Profesionales, "IDProfesional", "IDProfesional");
+            return View();
+        }
     }
 }

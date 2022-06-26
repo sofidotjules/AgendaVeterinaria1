@@ -38,6 +38,9 @@ p {
     color: #26a69a;
 }
 
+#zona-login{
+    text-decoration:none;
+}
 .parallax-container {
     min-height: 380px;
     line-height: 0;
@@ -52,7 +55,7 @@ p {
 
 
 #download-button {
-    color: purple;
+    color: white;
 }
 
 .material-icons {

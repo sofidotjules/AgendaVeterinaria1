@@ -5,6 +5,7 @@
     Layout = "_DevExtremeLayout";
     var especialidades = ViewBag.Especialidades;
     var mascotas = ViewBag.Mascotas;
+    var tipoTurno = ViewBag.TipoTurno;
 }
 
 <style>
@@ -40,13 +41,28 @@
             <h1 style="text-align:center">PEDI TU TURNO</h1>
             <div class="row margen-renglon">
                 <div class="col-sm-6">
-                    <label asp-for="Especialidad" class="control-label"> Seleccioná el tipo de atención</label>
-                    <select asp-for="Especialidad" class="form-control" id="Especialidades" name="Especialidades">
-                        @foreach (var item in especialidades)
-                        {
-                            <option value="@item.IDEspecialidad"> @item.Descripcion</option>
-                        }
-                    </select>
+                    @if (tipoTurno.Equals("Veterinario"))
+                    {
+                        <label asp-for="Especialidad" class="control-label"><i class="fa fa-paw"></i>  Seleccioná el tipo de atención</label>
+                        <select asp-for="Especialidad" class="form-control" id="Especialidades" name="Especialidades">
+                            @foreach (var item in especialidades)
+                            {
+                                <option value="@item.IDEspecialidad"> @item.Descripcion</option>
+                            }
+                        </select>
+                    }
+                    else
+                    {
+                        <label asp-for="Especialidad" class="control-label"><i class="fa fa-shower"></i> Seleccioná el tipo de atención</label>
+
+
+                        <select asp-for="Especialidad" class="form-control" id="Especialidades" name="Especialidades">
+                            <option value="10">Corte</option>
+                            <option value="10">Corte y Baño</option>
+                            <option value="10">Peinar y Arreglar</option>
+                        </select>
+                    }
+
                 </div>
                 <div class="col-sm-6">
                     <label asp-for="Mascota" class="control-label"> Seleccioná tu mascota</label>
@@ -151,7 +167,7 @@
                             <div style="margin-top:1.5vh">
                                 <textarea asp-for="Detalle" id="txtDetalle" name="txtDetalle" class="form-control" style="height: 150px; width: 400px;" placeholder="Por favor indique el motivo por el cual solicita la atención"></textarea>
                                 <input asp-for="Horario" hidden id="txtFecha" name="txtFecha" class="form-control" />
-                                
+
                             </div>
                             <input onclick="msjConfirmar()" class="btn btn-warning" value="RESERVAR TURNO" />
 
@@ -184,6 +200,9 @@
             listaCargada = false;
             $('#horariosDisponiblesOpciones div').empty();
             $("#divSolicitarTurno").css('visibility', 'hidden');
+            if ($('#Especialidades').val() == 10) {
+                window.location = "solicitarturno?tipoTurno=Peluqueria";
+            }
         });
 
     });
@@ -229,7 +248,7 @@
     function minValue_changed(data) {
         var calendar = getCalendarInstance();
         calendar.option("min", new Date(date - 1000 * 60 * 60 * 24 * 3));
-      
+
     }
 
     function maxValue_changed(data) {
@@ -285,7 +304,7 @@
         $.ajax({
             type: "GET",
             url: "@Url.Action("ObtenerHorasTurno","Turno")",
-            data: { fecha: fechaGlobal, idEspecialidad: idEspecialidad, tipoTurno: "Veterinario" },
+            data: { fecha: fechaGlobal, idEspecialidad: idEspecialidad, tipoTurno: "@tipoTurno" },
             contentType: "application/json;charset=utf-8",
             dataType: "json",
             success: function(result) {
@@ -347,7 +366,7 @@
         var idProfesional = $("#Profesional").text();
         var idEspecialidad = $("#Especialidades option:selected").val();
         debugger;
-        
+
 
         swal({
             text: "Se reservará un turno para la especialidad: " + $("#Especialidades option:selected").text() + ". El día " + fechaGlobal + " a las " + $(" .active").text(),
@@ -364,7 +383,7 @@
                     $.ajax({
                         type: "Get",
                         url: "@Url.Action("SaveTurno","Turno")",
-                        data: { fecha: fechaGlobal, tipoTurno: "Veterinario", detalle: detalle, idMascota: idMascota, idProfesional: idProfesional, idEspecialidad: idEspecialidad , horario: horario.innerText },
+                        data: { fecha: fechaGlobal, tipoTurno: "@tipoTurno", detalle: detalle, idMascota: idMascota, idProfesional: idProfesional, idEspecialidad: idEspecialidad, horario: horario.innerText },
                         contentType: "application/json;charset=utf-8",
                         dataType: "json",
                         success: function(result) {

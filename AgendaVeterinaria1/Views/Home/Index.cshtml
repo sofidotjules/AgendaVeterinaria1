@@ -1,22 +1,129 @@
 ﻿@{
     ViewData["Title"] = "HOME";
 }
-
-<div class="text-center">
-    <h1 class="display-4">Bienvenido</h1>
-   
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    ACA VAN LOS RECUADROS CON LAS IMAGENES QUE TE MANDAN A PELUQUERIA O A PEDIR TURNOS DE VETERINARIA
-
-    en _layout se pueden cambiar los colores de fondo etxc
-
-    SE SEPARARIAN EN COLUMNITAS
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Agenda veterinarias</title>
 
 
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+</head>
+<body>
+  
+  <div id="index-banner" class="parallax-container">
+    <div class="section no-pad-bot">
+      <div class="container">
+        <br><br>
+        <h1 class="header center teal-text text-lighten-2">Tu agenda veterinaria virtual</h1>
+        <div class="row center">
+          <h5 class="header col s12 light">Registrate, reservá tu turno y listo</h5>
+        </div>
+        <div class="row center">
+          <a href="#" id="download-button" class="btn-large waves-effect waves-light teal lighten-1">QUIERO RESERVAR MI TURNO</a>
+        </div>
+        <br><br>
+
+      </div>
+    </div>
+    <div style="bg-image: url(@Url.Content("~/Imagenes/backpupis1.jpg"))"></div>
+    <div class="parallax"><img src="@Url.Content("~/Imagenes/backpupis1.jpg")" alt="Dos cachorros de gato y dos de perro sentados"></div>
+  </div>
 
 
-</div>
+  <div class="container">
+    <div class="section">
+
+      
+      <div class="row">
+        <div class="col s12 m4">
+          <div class="icon-block">
+            <h2 class="center brown-text"><i class="material-icons">account_circle</i></h2>
+            <h5 class="center">Pacientes</h5>
+
+            <p class="light">Registrá tu usuario e ingresá los datos de tus mascotas. </p>
+          </div>
+        </div>
+
+        <div class="col s12 m4">
+          <div class="icon-block">
+            <h2 class="center brown-text"><i class="material-icons">assignment</i></h2>
+            <h5 class="center">Agenda</h5>
+
+            <p class="light">Chequá la agenda y según disponibilidad reservá tu turno.</p>
+          </div>
+        </div>
+
+        <div class="col s12 m4">
+          <div class="icon-block">
+            <h2 class="center brown-text"><i class="material-icons">assignment_ind</i></h2>
+            <h5 class="center">Profesionales</h5>
+
+            <p class="light">Registrá tu perfil profesional y armá tu agenda como vos quieras.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <div class="parallax-container valign-wrapper">
+    <div class="section no-pad-bot">
+      <div class="container">
+        <div class="row center">
+          <h5 class="header col s12">SERVICIOS</h5>
+        </div>
+      </div>
+    </div>
+    <div class="parallax"><img src="backpupis2.jpg" alt="Unsplashed background img 2"></div>
+  </div>
+
+  <div class="container">
+    <div class="section">
+
+      <div class="row">
+        <div class="col s6 center">
+          <h3><i class="mdi-content-send brown-text"></i></h3>
+          <h4>VETERINARIA </h4>
+          <p class="left-align light">Ofrecemos: chequeos de rutina, análisis prequirúrgicos, vacunación, oncología entre otras especialidades</p>
+        </div>
+        <div class="col s6 center">
+          <h3><i class="mdi-content-send brown-text"></i></h3>
+          <h4>PELUQUERIA </h4>
+          <p class="left-align light">Deja a tu mascota en manos de un especialista, podes reservar para baño simple o baño con corte.</p>
+        </div>
+      </div>
+      <div class="row">
+        
+      </div>
+    </div>
+  </div>
+
+
+  <div class="parallax-container valign-wrapper">
+    <div class="section no-pad-bot">
+      <div class="container">
+        <div class="row center">
+          <h5 class="header col s12 light">CALENDARIO VISIBLE Y CLARO</h5>
+        </div>
+      </div>
+    </div>
+    <div class="parallax"><img src="backpupis3.jpg" alt="Unsplashed background img 3"></div>
+  </div>
+
+  
+
+
+  <!--  Scripts-->
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="js/materialize.js"></script>
+  <script src="js/init.js"></script>
+
+  </body>
+</html>
+

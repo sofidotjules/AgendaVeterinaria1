@@ -44,17 +44,17 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Turno" asp-action="SolicitudTurno">Turnos Peluqueria</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Turno" asp-action="solicitarturno" asp-route-tipoTurno="Peluqueria">Turnos Peluqueria</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Turno" asp-action="SolicitudTurno">Turnos Veterinaria</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Turno" asp-action="solicitarturno" asp-route-tipoTurno="Veterinario">Turnos Veterinaria</a>
                         </li>
                     </ul>
                 </div>
                 <div class="float-end">
                     <ul class="navbar-nav flex-grow-1 float-end">
                          <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy"><i class="fa fa-user-circle-o"></i>Ingresar</a>
+                            <a class="nav-link text-dark" asp-controller="Home" asp-action="Privacy"><i class="fa fa-user-circle-o"></i>Ingresar</a>
                         </li>
                     </ul>
                 </div>

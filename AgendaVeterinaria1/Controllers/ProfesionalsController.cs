@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AgendaVeterinaria1.Context;
 using AgendaVeterinaria1.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AgendaVeterinaria1.Controllers
 {
+    [Authorize(Roles = "Administrador")]
     public class ProfesionalsController : Controller
     {
         private readonly AgendaDBContext _context;

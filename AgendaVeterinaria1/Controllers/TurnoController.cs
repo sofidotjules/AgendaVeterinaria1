@@ -8,9 +8,12 @@ using Microsoft.EntityFrameworkCore;
 using AgendaVeterinaria1.Context;
 using AgendaVeterinaria1.Models;
 using System.Globalization;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AgendaVeterinaria1.Controllers
 {
+
+    [Authorize]
     public class TurnoController : Controller
     {
         private readonly AgendaDBContext _context;
@@ -174,6 +177,10 @@ namespace AgendaVeterinaria1.Controllers
 
         public IActionResult SolicitarTurno(string? tipoTurno)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Home");
+            }
 
             ViewBag.TipoTurno = tipoTurno;
             ViewData["Mascotas"] = _context.Mascotas;
@@ -245,19 +252,27 @@ namespace AgendaVeterinaria1.Controllers
 
         public JsonResult SaveTurno(DateTime fecha, string tipoTurno, string detalle, int idMascota, int idProfesional,int idEspecialidad,string horario)
         {
-
-            Turno turno = new Turno()
+            try
             {
-                Fecha = fecha,
-                TipoDeTurno = tipoTurno,
-                Detalle = detalle,
-                IDProfesional = idProfesional, 
-                IDEspecialidad = idEspecialidad,
-                Horario = horario,
-                IDMascota = idMascota
-            };
-            _context.Add(turno);
-            _context.SaveChangesAsync();
+                Turno turno = new Turno()
+                {
+                    Fecha = fecha,
+                    TipoDeTurno = tipoTurno,
+                    Detalle = detalle,
+                    IDProfesional = idProfesional,
+                    IDEspecialidad = idEspecialidad,
+                    Horario = horario,
+                    IDMascota = idMascota
+                };
+                _context.Add(turno);
+                _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+           
            
             return Json(ErrorEventArgs.Empty);
         }

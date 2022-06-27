@@ -5,9 +5,10 @@
     //  Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Login</h1>
 
-<div class="row">
+<div class="container">
+    <h4>Login</h4>
+    <div class="row">
     <div class="col-md-4">
         <form asp-action="Login">
             <div class="form-group">
@@ -16,7 +17,7 @@
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Contrasenia" class="control-label"></label>
+                <label asp-for="Contrasenia" class="control-label">Contraseña</label>
                 <input asp-for="Contrasenia" class="form-control" type="password"/>
                 <span asp-validation-for="Contrasenia" class="text-danger"></span>
             </div>
@@ -33,5 +34,7 @@
             </div>
         </form>
     </div>
+</div>
+
 </div>
 

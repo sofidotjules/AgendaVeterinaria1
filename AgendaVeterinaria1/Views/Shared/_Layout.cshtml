@@ -39,11 +39,20 @@
 <body>
     <nav class="white" role="navigation">
         <div class="nav-wrapper container">
-        <a id="logo-container" href="#" class="brand-logo"><img src="@Url.Content("~/Imagenes/logopedorro.jpg")"></a>
-        <ul id="zona-login" class="right hide-on-med-and-down">            
-            <li><a href="#" class="waves-effect waves-light btn"><i class="material-icons right">assignment_return</i>Ingresar</a></li>
-            <li><a href="#">Registrarme</a></li>
-        </ul>
+        <a id="logo-container" href="~/Home" class="brand-logo"><img src="https://branchsites.cats.org.uk/uploads/branches/138/paws%20up%20(1).png" style="height:50px"></a>
+        <ul id="zona-login" class="right hide-on-med-and-down">
+                @if (!User.Identity.IsAuthenticated)
+                {
+                    <li><a class="waves-effect waves-light btn" href="~/Home/Login"><i class="material-icons right">assignment_return</i>Ingresar</a></li>
+                    <li><a href="#">Registrarme</a></li>
+                }
+                else
+                {
+                    <li><a class="waves-effect waves-light btn" href="~/Clientes/Edit?1"><i class="material-icons right">assignment_return</i>Mi Perfil</a></li>    
+                }
+                
+
+            </ul>
 
         <ul id="nav-mobile" class="sidenav">
             <li><a href="#">Menu</a></li>
@@ -135,6 +144,4 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
 @*    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 *@    @await RenderSectionAsync("Scripts", required: false)
-</body>
-</html>
 

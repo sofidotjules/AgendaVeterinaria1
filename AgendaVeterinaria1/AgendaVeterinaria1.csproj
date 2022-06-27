@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
@@ -27,6 +27,30 @@
 
     <Compile Remove="Controllers\UsuarioController.cs" />
     <Compile Remove="Models\Usuario.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Content\materialize\css\materialize.css" />
+    <None Remove="Content\materialize\css\materialize.min.css" />
+    <None Remove="Content\materialize\js\materialize.js" />
+    <None Remove="Content\materialize\js\materialize.min.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\materialize\css\materialize.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="Content\materialize\css\materialize.min.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="Content\materialize\js\materialize.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="Content\materialize\js\materialize.min.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="DevExtreme.AspNet.Data" Version="2.8.6" />

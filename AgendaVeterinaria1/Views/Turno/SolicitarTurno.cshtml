@@ -41,7 +41,7 @@
             <h1 style="text-align:center">PEDI TU TURNO</h1>
             <div class="row margen-renglon">
                 <div class="col-sm-6">
-                    @if (tipoTurno.Equals("Veterinario"))
+                    @if (tipoTurno.Equals("Veterinaria"))
                     {
                         <label asp-for="Especialidad" class="control-label"><i class="fa fa-paw"></i>  Seleccioná el tipo de atención</label>
                         <select asp-for="Especialidad" class="form-control" id="Especialidades" name="Especialidades">
@@ -200,7 +200,7 @@
             listaCargada = false;
             $('#horariosDisponiblesOpciones div').empty();
             $("#divSolicitarTurno").css('visibility', 'hidden');
-            if ($('#Especialidades').val() == 10) {
+            if ($('#Especialidades').val() == 10 && '@tipoTurno' !='Peluqueria') {
                 window.location = "solicitarturno?tipoTurno=Peluqueria";
             }
         });

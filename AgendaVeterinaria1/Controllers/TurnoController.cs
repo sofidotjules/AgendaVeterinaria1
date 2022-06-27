@@ -13,7 +13,6 @@ using Microsoft.AspNetCore.Authorization;
 namespace AgendaVeterinaria1.Controllers
 {
 
-    [Authorize]
     public class TurnoController : Controller
     {
         private readonly AgendaDBContext _context;
@@ -175,12 +174,14 @@ namespace AgendaVeterinaria1.Controllers
           return (_context.Turnos?.Any(e => e.IDTurno == id)).GetValueOrDefault();
         }
 
+
+        [AllowAnonymous]
         public IActionResult SolicitarTurno(string? tipoTurno)
         {
-            if (!User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Login", "Home");
-            }
+            //if (!User.Identity.IsAuthenticated)
+            //{
+            //    return RedirectToAction("Login", "Home");
+            //}
 
             ViewBag.TipoTurno = tipoTurno;
             ViewData["Mascotas"] = _context.Mascotas;
@@ -250,6 +251,7 @@ namespace AgendaVeterinaria1.Controllers
           
         }
 
+        [AllowAnonymous]
         public JsonResult SaveTurno(DateTime fecha, string tipoTurno, string detalle, int idMascota, int idProfesional,int idEspecialidad,string horario)
         {
             try

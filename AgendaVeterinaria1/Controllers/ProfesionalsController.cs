@@ -48,7 +48,6 @@ namespace AgendaVeterinaria1.Controllers
         // GET: Profesionals/Create
         public IActionResult Create()
         {
-            ViewBag.Especialidades = _context.Especialidades.ToList();
             return View();
         }
 
@@ -59,7 +58,7 @@ namespace AgendaVeterinaria1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("IDProfesional,Matricula,Nombre,DNI,TipoProfesional,Email,Contrasenia")] Profesional profesional, IFormCollection formCollection)
         {
-            var especialidades = formCollection["Especialidades"];
+           
             ModelState.Remove("Especialidades");
 
             if (ModelState.IsValid)

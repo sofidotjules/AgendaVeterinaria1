@@ -1,171 +1,199 @@
-﻿
+﻿@model AgendaVeterinaria1.Models.Turno
 @{
     ViewData["Title"] = "Solicitar Turno";
     //Layout = "~/Views/Shared/_Layout.cshtml";
     Layout = "_DevExtremeLayout";
+    var especialidades = ViewBag.Especialidades;
+    var mascotas = ViewBag.Mascotas;
 }
- 
+
 <style>
-.widget-container {
-    margin-right: 320px;
-}
+    .dx-calendar {
+       width: 500px;
+       height: 400px;
+    }
 
-#calendar-container {
-    margin: auto;
-}
+    .btn-warning {
+        background-color: #f05b41;
+        border: 1px solid #f05b41;
+        width: 300px;
+        justify-content: center;
+        cursor: pointer;
+        font-weight: 600;
+        color:white
+    }
 
-.dx-calendar-cell:not(.dx-calendar-other-month) .weekend,
-.dx-calendar-cell:not(.dx-calendar-other-month) .holyday {
-    text-shadow: none;
-    font-weight: bold;
-}
+       .btn-warning:hover {
+        color:white
+    }
 
-.dx-calendar-cell:not(.dx-calendar-other-month) .weekend {
-    color: #3030FF;
-}
+    .margen-renglon {
+    margin-top: 5% !important;
+    }
 
-.dx-state-disabled.dx-calendar .dx-calendar-cell:not(.dx-calendar-other-month) .weekend {
-    color: #8080FF;
-}
-
-.dx-calendar-cell:not(.dx-calendar-other-month) .holyday {
-    color: #FF3030;
-}
-
-.dx-state-disabled.dx-calendar .dx-calendar-cell:not(.dx-calendar-other-month) .holyday {
-    color: #FF8080;
-}
-
-.options {
-    padding: 20px;
-    background-color: rgba(191, 191, 191, 0.15);
-    position: absolute;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    width: 260px;
-}
-
-.caption {
-    font-weight: 500;
-    font-size: 18px;
-}
-
-.option {
-    margin-top: 10px;
-}
-
-.dx-calendar {
-    width: 500px;
-    min-width: 282px;
-    height: 400px;
-    min-height: 268.6px;
-    background-color: #fff;
-    -webkit-tap-highlight-color: transparent;
-    outline: 0;
-    border: 1px solid transparent;
-}
 </style>
-<div class="container">
-    <div class="row">
-       <div class="col-md-3">
-           <span></span>
-       </div> 
-       <div class="col-md-4">
-        <div id="calendar-demo">
-    <div class="widget-container">
-        @(Html.DevExtreme().Calendar()
-            .ID("calendar-container")
-            .Value(DateTime.Now)
-            .Disabled(false)
-            .ZoomLevel(CalendarZoomLevel.Month)
-            .OnValueChanged("calendar_valueChanged").OnInitialized("OnInitialized")  
-        )
-    </div>
+<div class="container margen-renglon">
+    <div class="row margen-renglon">
+        <div class="col-md-3">
+        </div>
+        <div class="col-md-6">
+            <h1 style="text-align:center">PEDI TU TURNO</h1>
+            <div class="row margen-renglon">
+                <div class="col-sm-6">
+                    <label asp-for="Especialidad" class="control-label"> Seleccioná el tipo de atención</label>
+                    <select asp-for="Especialidad" class="form-control" id="Especialidades" name="Especialidades">
+                        @foreach (var item in especialidades)
+                        {
+                            <option value="@item.IDEspecialidad"> @item.Descripcion</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-sm-6">
+                    <label asp-for="Mascota" class="control-label"> Seleccioná tu mascota</label>
+                    <select asp-for="Mascota" class="form-control" id="Mascota" name="Mascota">
+                        @foreach (var item in mascotas)
+                        {
+                            <option value="@item.IDMascota"> @item.Nombre</option>
+                        }
+                    </select>
+                </div>
 
-    <div class="options" hidden>
-        <div class="caption">Options</div>
-        <div class="option">
-            @(Html.DevExtreme().CheckBox()
-                .Text("Specified min value")
-                .OnValueChanged("minValue_changed")
-            )
+
+
+
+                <div id="calendar-demo" class="margen-renglon">
+
+                    <div class="widget-container" style="margin-left:2em">
+                        <label class="control-label"> Seleccioná la fecha del turno </label>
+                        @(Html.DevExtreme().Calendar()
+                        .ID("calendar-container")
+                        .Value(DateTime.Now)
+                        .Disabled(false)
+                        .ZoomLevel(CalendarZoomLevel.Month)
+                        .OnValueChanged("calendar_valueChanged").OnInitialized("OnInitialized")
+                        )
+                    </div>
+
+                    <div class="options" hidden>
+                        <div class="caption">Options</div>
+                        <div class="option">
+                            @(Html.DevExtreme().CheckBox()
+                            .Text("Specified min value")
+                            .OnValueChanged("minValue_changed")
+                            )
+                        </div>
+                        <div class="option">
+                            @(Html.DevExtreme().CheckBox()
+                            .Text("Specified max value")
+                            .OnValueChanged("maxValue_changed")
+
+                            )
+                        </div>
+
+                        <div class="option">
+                            @(Html.DevExtreme().CheckBox()
+                            .Text("Disable weekend")
+                            .OnValueChanged("disabledDates_changed")
+
+                            )
+                        </div>
+                        <div class="option">
+                            @(Html.DevExtreme().CheckBox()
+                            .Text("Monday as the first day of a week")
+                            .OnValueChanged("firstDayOfWeek_changed")
+                            )
+                        </div>
+                        <div class="option">
+                            @(Html.DevExtreme().CheckBox()
+                            .Text("Use the Custom Cell Template")
+                            .Value(false)
+                            .OnValueChanged("useCustomTemplate")
+                            )
+                        </div>
+                        <div class="option">
+                            @(Html.DevExtreme().CheckBox()
+                            .Text("Disabled")
+                            .OnValueChanged("disabledState_changed")
+                            )
+                        </div>
+                        <div class="option">
+                            <span>Zoom level</span>
+                            @(Html.DevExtreme().SelectBox()
+                            .DataSource(new[] {
+                            "month",
+                            "year",
+                            "decade",
+                            "century"
+                            })
+                            .Value("month")
+                            .OnValueChanged("zoomLevel_changed")
+                            )
+                        </div>
+                        <div class="option">
+                            <span>Selected date</span>
+                            @(Html.DevExtreme().DateBox()
+                            .ID("selected-date")
+                            .Value(DateTime.Now)
+                            .Width("100%")
+                            .OnValueChanged("selectedDate_changed")
+                            )
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="row margen-renglon">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-2">
+                        <div id="divSolicitarTurno" style="visibility:hidden;">
+                            <div id="horariosDisponiblesOpciones" style="background-color:white;padding:4px; border:1px solid #cccccc; width:400px;">
+                            </div>
+                            <div style="margin-top:1.5vh">
+                                <textarea asp-for="Detalle" id="txtDetalle" name="txtDetalle" class="form-control" style="height: 150px; width: 400px;" placeholder="Por favor indique el motivo por el cual solicita la atención"></textarea>
+                                <input asp-for="Horario" hidden id="txtFecha" name="txtFecha" class="form-control" />
+                                
+                            </div>
+                            <input onclick="msjConfirmar()" class="btn btn-warning" value="RESERVAR TURNO" />
+
+
+
+
+                        </div>
+                    </div>
+                    <div class="col-md-2"></div>
+
+                    <input asp-for="IDProfesional" hidden id="Profesional" name="Profesional" class="form-control" />
+                </div>
+            </div>
+
+
+
+
         </div>
-        <div class="option">
-            @(Html.DevExtreme().CheckBox()
-                .Text("Specified max value")
-                .OnValueChanged("maxValue_changed")
-                
-            )
-        </div>
-        
-        <div class="option">
-            @(Html.DevExtreme().CheckBox()
-                .Text("Disable weekend")
-                .OnValueChanged("disabledDates_changed")
-               
-            )
-        </div>
-        <div class="option">
-            @(Html.DevExtreme().CheckBox()
-                .Text("Monday as the first day of a week")
-                .OnValueChanged("firstDayOfWeek_changed")
-            )
-        </div>
-        <div class="option">
-            @(Html.DevExtreme().CheckBox()
-                .Text("Use the Custom Cell Template")
-                .Value(false)
-                .OnValueChanged("useCustomTemplate")
-            )
-        </div>
-        <div class="option">
-            @(Html.DevExtreme().CheckBox()
-                .Text("Disabled")
-                .OnValueChanged("disabledState_changed")
-            )
-        </div>
-        <div class="option">
-            <span>Zoom level</span>
-            @(Html.DevExtreme().SelectBox()
-                .DataSource(new[] {
-                    "month",
-                    "year",
-                    "decade",
-                    "century"
-                })
-                .Value("month")
-                .OnValueChanged("zoomLevel_changed")
-            )
-        </div>
-        <div class="option">
-            <span>Selected date</span>
-            @(Html.DevExtreme().DateBox()
-                .ID("selected-date")
-                .Value(DateTime.Now)
-                .Width("100%")
-                .OnValueChanged("selectedDate_changed")
-            )
+        <div class="col-md-3">
         </div>
     </div>
 </div>
-
-       </div> 
-       <div class="col-md-3">
-           <span></span>
-       </div> 
-    </div>
-</div>
-
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>
     DevExpress.localization.locale(navigator.language);
     var date = new Date().getTime();
+    var fechaGlobal;
+    $(function() {
+        $('#Especialidades').on('change', '', function(e) {
+            listaCargada = false;
+            $('#horariosDisponiblesOpciones div').empty();
+            $("#divSolicitarTurno").css('visibility', 'hidden');
+        });
 
-    function OnInitialized(s,e){  
-      disabledDates_changed(true);
-      firstDayOfWeek_changed(false)
-     }  
-    
+    });
+
+    function OnInitialized(s, e) {
+        minValue_changed(true);
+        disabledDates_changed(true);
+        firstDayOfWeek_changed(false)
+    }
+
     function getCalendarInstance() {
         return $("#calendar-container").dxCalendar("instance");
     }
@@ -183,8 +211,8 @@
             if (isWeekend(data.date))
                 cssClass = "weekend";
 
-            $.each([[1, 0], [4, 6], [25, 11]], function (_, item) {
-                if(data.date.getDate() === item[0] && data.date.getMonth() === item[1]) {
+            $.each([[1, 0], [4, 6], [25, 11]], function(_, item) {
+                if (data.date.getDate() === item[0] && data.date.getMonth() === item[1]) {
                     cssClass = "holyday";
                     return false;
                 }
@@ -200,16 +228,13 @@
 
     function minValue_changed(data) {
         var calendar = getCalendarInstance();
-        if(data.value) {
-            calendar.option("min", new Date(date - 1000 * 60 * 60 * 24 * 3));
-        } else {
-            calendar.option("min", null);
-        }
+        calendar.option("min", new Date(date - 1000 * 60 * 60 * 24 * 3));
+      
     }
 
     function maxValue_changed(data) {
         var calendar = getCalendarInstance();
-        if(data.value) {
+        if (data.value) {
             calendar.option("max", new Date(date + 1000 * 60 * 60 * 24 * 3));
         } else {
             calendar.option("max", null);
@@ -218,18 +243,15 @@
 
     function disabledDates_changed(data) {
         var calendar = getCalendarInstance();
-       // if (data.value) {
-           calendar.option("disabledDates", function (data) {
-                return isWeekend(data.date);
-            });
-       // } else {
-        //    calendar.option("disabledDates", null);
-       // }
+        calendar.option("disabledDates", function(data) {
+            return isWeekend(data.date);
+        });
+
     }
 
     function firstDayOfWeek_changed(data) {
         var calendar = getCalendarInstance();
-        if(data.value) {
+        if (data.value) {
             calendar.option("firstDayOfWeek", 1);
         } else {
             calendar.option("firstDayOfWeek", 0);
@@ -249,9 +271,109 @@
     }
 
     function selectedDate_changed(data) {
-         
+
         getCalendarInstance().option("value", data.value);
-        
+        $('#txtDetalle').val('');
+        $('#horariosDisponiblesOpciones div').empty();
+        loadTablaTurnos(data.value);
     }
 
+    function loadTablaTurnos(fecha) {
+
+        var idEspecialidad = $("#Especialidades option:selected").val();
+        fechaGlobal = fecha.toLocaleDateString("fr-CA", { year: "numeric", month: "2-digit", day: "2-digit" }).split('T')[0];
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("ObtenerHorasTurno","Turno")",
+            data: { fecha: fechaGlobal, idEspecialidad: idEspecialidad, tipoTurno: "Veterinario" },
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function(result) {
+                if (result[0] != undefined) {
+                    var horariosDisponibles = result;
+                    $('#horariosDisponiblesOpciones div').empty();
+                    $('#txtDetalle').empty();
+                    $("#divSolicitarTurno").css('visibility', 'visible');
+                    var div = document.createElement("div");
+                    div.id = "horariosDisponibles";
+                    div.style = 'padding-left:10px'
+                    var foo = document.getElementById("horariosDisponiblesOpciones");
+                    foo.appendChild(div);
+                    var i = 0;
+                    $.each(horariosDisponibles, function(index, value) {
+                        i++
+                        var element = document.createElement("a");
+                        element.type = "button";
+                        element.className = "btn btn-info btn-small pull-left"
+                        element.text = value;
+                        element.id = fecha;
+                        element.style = ' margin-right: 4px; margin-top:4px; color:white'
+                        element.onclick = function() {
+                            $(".active").removeClass("active");
+                            $(this).addClass("active");
+                        };
+
+                        if (index != 0) {
+                            var foo = document.getElementById("horariosDisponibles");
+                            foo.appendChild(element);
+                        }
+                        else {
+                            var profesional = document.getElementById("Profesional");
+                            profesional.innerText += value;
+                        }
+
+
+                    });
+                }
+                else {
+                    swal("Error", "No se han encontrado profesionales para la fecha indicada", "error");
+
+                }
+
+            },
+            error: function(response) {
+                swal("Error", "No se han encontrado profesionales para la fecha indicada", "error");
+
+            }
+        });
+
+    }
+
+    function msjConfirmar() {
+        var horario = document.getElementById("txtFecha");
+        horario.innerText += $(" .active").text();
+        var detalle = $("#txtDetalle").val();
+        var idMascota = $("#Mascota option:selected").val();
+        var idProfesional = $("#Profesional").text();
+        var idEspecialidad = $("#Especialidades option:selected").val();
+        debugger;
+        
+
+        swal({
+            text: "Se reservará un turno para la especialidad: " + $("#Especialidades option:selected").text() + ". El día " + fechaGlobal + " a las " + $(" .active").text(),
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((aceptar) => {
+                if (aceptar) {
+                    swal("Exito! Le llegará un correo con la información necesaria para el turno", {
+                        icon: "success",
+
+                    });
+                    $.ajax({
+                        type: "Get",
+                        url: "@Url.Action("SaveTurno","Turno")",
+                        data: { fecha: fechaGlobal, tipoTurno: "Veterinario", detalle: detalle, idMascota: idMascota, idProfesional: idProfesional, idEspecialidad: idEspecialidad , horario: horario.innerText },
+                        contentType: "application/json;charset=utf-8",
+                        dataType: "json",
+                        success: function(result) {
+                            window.location = "@Url.Action("Index","Home")";
+                        },
+                        error: function(response) {
+                        }
+                    });
+                }
+            });
+    }
 </script>

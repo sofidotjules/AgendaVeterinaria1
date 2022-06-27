@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AgendaVeterinaria1.Context;
 using AgendaVeterinaria1.Models;
+using System.Globalization;
 
 namespace AgendaVeterinaria1.Controllers
 {
@@ -173,9 +174,91 @@ namespace AgendaVeterinaria1.Controllers
 
         public IActionResult SolicitarTurno()
         {
-            //ViewData["IDCliente"] = new SelectList(_context.Clientes, "IDCliente", "IDCliente");
-           // ViewData["IDProfesional"] = new SelectList(_context.Profesionales, "IDProfesional", "IDProfesional");
+
+            ViewData["Mascotas"] = _context.Mascotas;
+            ViewData["Especialidades"] = _context.Especialidades;
+            // ViewData["IDProfesional"] = new SelectList(_context.Profesionales, "IDProfesional", "IDProfesional");
             return View();
+        }
+
+        public JsonResult ObtenerHorasTurno(DateTime fecha, int idEspecialidad, string tipoTurno) 
+        {
+            try
+            {
+                int i = 0;
+                List<Agenda> agendas = _context.Agendas
+                    .Include(x => x.Profesional)
+                    .Include(x => x.Profesional.Especialidades)
+                    .Where(x => x.Profesional.Especialidades.Select(y => y.IDEspecialidad).Contains(idEspecialidad)
+                            && x.Profesional.TipoProfesional.Equals(tipoTurno)
+                            && x.FechaDesde <= fecha && x.FechaHasta >= fecha).ToList();
+                Agenda agenda = null;
+                while (agenda == null && i<agendas.Count())
+                {
+                    int cantTurnos = _context.Turnos.Where(x => x.IDProfesional == agendas.ElementAt(i).IDProfesional).Count();
+
+                    if (cantTurnos < agendas.ElementAt(i).TopeDeTurnos)
+                    {
+                        agenda = agendas.ElementAt(i);
+                    }
+                    i++;
+                }
+                if (agenda != null)
+                {
+                    string[] horarios = agenda.FranjaHoraria.Split("-");
+
+                    TimeSpan horaHasta = new TimeSpan((Convert.ToInt32(horarios[1])) / 100, (Convert.ToInt32(horarios[1])) % 100, 0);
+                    TimeSpan horaDesde = new TimeSpan((Convert.ToInt32(horarios[0])) / 100, (Convert.ToInt32(horarios[0])) % 100, 0);
+
+                    DateTime TimeOut = DateTime.Today.Add(horaHasta);
+                    DateTime TimeIn = DateTime.Today.Add(horaDesde);
+
+
+                    var prueba = Enumerable.Range(0, (int)(TimeOut - TimeIn).TotalHours)
+                    .Select(i => TimeIn.AddHours(i).Hour);
+
+
+                    var date = DateTime.Now;
+                    List<string> horasDisponibles = new List<string>();
+                    foreach (var horas in prueba)
+                    {
+                        TimeSpan result = new TimeSpan((horas) / 100, (horas) % 100, 0);
+                        TimeSpan hoy = DateTime.Now.TimeOfDay;
+
+                        horasDisponibles.Add(string.Format("{1:00}:{0:00}", result.Hours, result.Minutes));
+                    }
+
+                    horasDisponibles.Add(agenda.IDProfesional.ToString());
+                    return Json(horasDisponibles.OrderBy(x => x));//("HorasDisponibles", horasDisponibles.OrderBy(x => x));
+                }
+                return Json(ErrorEventArgs.Empty);
+                
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+          
+        }
+
+        public JsonResult SaveTurno(DateTime fecha, string tipoTurno, string detalle, int idMascota, int idProfesional,int idEspecialidad,string horario)
+        {
+
+            Turno turno = new Turno()
+            {
+                Fecha = fecha,
+                TipoDeTurno = tipoTurno,
+                Detalle = detalle,
+                IDProfesional = idProfesional, 
+                IDEspecialidad = idEspecialidad,
+                Horario = horario,
+                IDMascota = idMascota
+            };
+            _context.Add(turno);
+            _context.SaveChangesAsync();
+           
+            return Json(ErrorEventArgs.Empty);
         }
     }
 }

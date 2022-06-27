@@ -48,15 +48,6 @@
                 <span asp-validation-for="Contrasenia" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Especialidades" class="control-label"></label>
-                <select asp-for="Especialidades" class="form-control" style="height:250px" multiple>
-                @foreach(var item in especialidades){
-                    <option value="@item.IDEspecialidad"> @item.Descripcion</option>
-                }
-                </select>
-                <span asp-validation-for="Especialidades" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <br/>
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

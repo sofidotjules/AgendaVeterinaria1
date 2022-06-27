@@ -19,6 +19,11 @@ namespace AgendaVeterinaria1.Models
         [ForeignKey("IDProfesional")]
         public Profesional Profesional { get; set; }
         public int IDProfesional { get; set; }
-        
+
+        [ForeignKey("IDEspecialidad")]
+        public Especialidad Especialidad { get; set; }
+        public int IDEspecialidad { get; set; }
+
+
     }
 }

@@ -223,6 +223,13 @@
         return day === 0 || day === 6;
     }
 
+    function isPast(date) { 
+        debugger;
+        var d1 = new Date();
+        var respuesta = date < d1;
+        return respuesta;
+    }
+
     function getCellTemplate(data) {
         var cssClass = "";
 
@@ -263,7 +270,7 @@
     function disabledDates_changed(data) {
         var calendar = getCalendarInstance();
         calendar.option("disabledDates", function(data) {
-            return isWeekend(data.date);
+            return isWeekend(data.date) || isPast(data.date);
         });
 
     }

@@ -8,16 +8,25 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultDatabas
 services.AddControllersWithViews();
 //services.AddDbContext<AgendaDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultDatabase")));
 //builder.Services.AddControllersWithViews();
+builder.Services.AddDistributedMemoryCache();
+
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromSeconds(10);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
 builder.Services.AddDbContext<AgendaDBContext>(options => options.UseSqlServer(connectionString));
-services
-    .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie(config =>
-    {
-        config.LoginPath = "/Home/Login";
-        config.AccessDeniedPath = "/Home/NoAutorizado";
-        config.LogoutPath = "/Home/Login";
-        config.ExpireTimeSpan = TimeSpan.FromMinutes(30);
-    });
+//services
+//    .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+//    .AddCookie(config =>
+//    {
+//        config.LoginPath = "/Home/Login";
+//        config.AccessDeniedPath = "/Home/NoAutorizado";
+//        config.LogoutPath = "/Home/Login";
+//        config.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+//    });
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -34,6 +43,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+app.UseSession();
 
 app.MapControllerRoute(
     name: "default",

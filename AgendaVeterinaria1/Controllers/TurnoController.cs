@@ -178,6 +178,7 @@ namespace AgendaVeterinaria1.Controllers
         [AllowAnonymous]
         public IActionResult SolicitarTurno(string? tipoTurno)
         {
+            var usuario = HttpContext.Session.GetString("usuario");
             //if (!User.Identity.IsAuthenticated)
             //{
             //    return RedirectToAction("Login", "Home");
@@ -194,6 +195,7 @@ namespace AgendaVeterinaria1.Controllers
         {
             try
             {
+                /*consultar si los turnos ya fueron s olicitados en ese horario*/
                 int i = 0;
                 List<Agenda> agendas = _context.Agendas
                     .Include(x => x.Profesional)
@@ -212,6 +214,7 @@ namespace AgendaVeterinaria1.Controllers
                     }
                     i++;
                 }
+
                 if (agenda != null)
                 {
                     string[] horarios = agenda.FranjaHoraria.Split("-");
@@ -234,12 +237,18 @@ namespace AgendaVeterinaria1.Controllers
                         TimeSpan result = new TimeSpan((horas) / 100, (horas) % 100, 0);
                         TimeSpan hoy = DateTime.Now.TimeOfDay;
 
-                        horasDisponibles.Add(string.Format("{1:00}:{0:00}", result.Hours, result.Minutes));
+                        var horasACargar = string.Format("{1:00}:{0:00}", result.Hours, result.Minutes);
+                        List<Turno> turnoList = _context.Turnos.Where(x=>x.Fecha==fecha && x.Horario ==horasACargar).ToList();
+                        if (turnoList.Count==0)
+                        {
+                            horasDisponibles.Add(horasACargar);
+                        }                        
                     }
 
                     horasDisponibles.Add(agenda.IDProfesional.ToString());
                     return Json(horasDisponibles.OrderBy(x => x));//("HorasDisponibles", horasDisponibles.OrderBy(x => x));
                 }
+
                 return Json(ErrorEventArgs.Empty);
                 
             }

@@ -64,11 +64,17 @@ namespace AgendaVeterinaria1.Controllers
 
             if (usuario is null)
             {
-                ViewBag.Error = "Las credenciales ingresadas son incorrectas. Intente nuevamente o comuniquese con Petibrush";
+                ViewBag.Error = "Las credenciales ingresadas son incorrectas. Intente nuevamente o comuniquese con Vetagen";
                 return View();
             }
 
-            await SignIn(usuario);
+            //aca se agrega la session
+            HttpContext.Session.SetString("usuario", usuario.IDCliente.ToString());
+            /*HttpContext.Session.GetString("usuario")*/
+
+            /*agregar en startup .AddSession(); .UseSession();*/
+
+           // await SignIn(usuario);
 
             return RedirectToAction("Index", "Home");
         }
@@ -84,7 +90,7 @@ namespace AgendaVeterinaria1.Controllers
             }
             else
             {
-                identity.AddClaim(new Claim(ClaimTypes.Role, "Administrador"));
+                identity.AddClaim(new Claim(ClaimTypes.Role, "Profesional"));
             }
             
             identity.AddClaim(new Claim(ClaimTypes.Email, usuario.Email));

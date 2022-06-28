@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace AgendaVeterinaria1.Controllers
 {
-    [Authorize(Roles = "Administrador")]
+    //[Authorize(Roles = "Administrador")]
     public class ProfesionalsController : Controller
     {
         private readonly AgendaDBContext _context;
@@ -96,7 +96,8 @@ namespace AgendaVeterinaria1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("IDProfesional,Matricula,Nombre,DNI,TipoProfesional,Email")] Profesional profesional, IFormCollection formCollection)
         {
-            if (id != profesional.IDProfesional)
+            Profesional buscar = _context.Profesionales.Where(x => x.Matricula == profesional.Matricula).FirstOrDefault();
+            if (id != buscar.IDProfesional)
             {
                 return NotFound();
             }
@@ -108,6 +109,13 @@ namespace AgendaVeterinaria1.Controllers
             {
                 try
                 {
+                   
+                    foreach (var item in especialidades)
+                    {
+                        Especialidad especialidad = _context.Especialidades.Where(x => x.IDEspecialidad == Convert.ToInt32(item)).FirstOrDefault();
+                        profesional.Especialidades.Add(especialidad);
+                    }
+
                     _context.Update(profesional);
                     await _context.SaveChangesAsync();
                 }

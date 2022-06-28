@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace AgendaVeterinaria1.Controllers
 {
-    [Authorize]
+   
     public class MascotasController : Controller
     {
         private readonly AgendaDBContext _context;

@@ -7,14 +7,12 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
 
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
     <link rel="stylesheet" href="~/lib/materialize/css/materialize.css" asp-append-version="true" />
+
     <link rel="stylesheet" href="~/AgendaVeterinaria1.styles.css" asp-append-version="true" />
     @*<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">*@
     <script src="https://kit.fontawesome.com/0b6cc95df8.js" crossorigin="anonymous"></script>
-
-    
-
-
 
 
     @*<link href="~/css/devextreme/bootstrap.css" rel="stylesheet" />*@
@@ -34,24 +32,16 @@
     <script src="~/js/devextreme/aspnet/dx.aspnet.mvc.js"></script>
     <script src="~/js/devextreme/aspnet/dx.aspnet.data.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
 </head>
 
 <body>
     <nav class="white" role="navigation">
         <div class="nav-wrapper container">
-        <a id="logo-container" href="~/Home" class="brand-logo"><img src="https://branchsites.cats.org.uk/uploads/branches/138/paws%20up%20(1).png" style="height:50px"></a>
-        <ul id="zona-login" class="right hide-on-med-and-down">
-                @if (!User.Identity.IsAuthenticated)
-                {
-                    <li><a class="waves-effect waves-light btn" href="~/Home/Login"><i class="material-icons right">assignment_return</i>Ingresar</a></li>
-                    <li><a href="#">Registrarme</a></li>
-                }
-                else
-                {
-                    <li><a class="waves-effect waves-light btn" href="~/Clientes/Edit?1"><i class="material-icons right">assignment_return</i>Mi Perfil</a></li>    
-                }
-                
-
+        <a id="logo-container" href="~/Home" class="brand-logo" style="color:grey">VETAGEN <img src="https://branchsites.cats.org.uk/uploads/branches/138/paws%20up%20(1).png" style="height:50px"></a>
+            <ul id="zona-login" class="right hide-on-med-and-down">
+                <li><a class="waves-effect waves-light btn" href="~/Home/Login"><i class="material-icons right">assignment_return</i>Ingresar</a></li>
+                <li><a href="#">Registrarme</a></li>
             </ul>
 
         <ul id="nav-mobile" class="sidenav">
@@ -61,7 +51,10 @@
         </div>
     </nav>
     <main>
-        @RenderBody()
+        <div class="container">
+            @RenderBody()
+        </div>
+        
         <hr/>
         <footer class="page-footer teal">
         <div class="container">
@@ -142,6 +135,6 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-@*    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-*@    @await RenderSectionAsync("Scripts", required: false)
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>*@
+
 

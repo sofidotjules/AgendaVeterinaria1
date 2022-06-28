@@ -8,10 +8,6 @@ namespace AgendaVeterinaria1.Models
         [Key]
         public int IDProfesional { get; set; }
 
-        [ForeignKey("IDUsuario")]
-        public Usuario Usuario { get; set; }
-        public int IDUsuario { get; set; }
-
         public string? Matricula { get; set; }
 
         public string? Nombre { get; set; }
@@ -20,6 +16,10 @@ namespace AgendaVeterinaria1.Models
 
         public string TipoProfesional  { get; set; }
 
-        public string? Email { get; set; }
+        public string Email { get; set; }
+
+        public string Contrasenia { get; set; }
+
+        public List<Especialidad> Especialidades{ get; set; }
     }
 }

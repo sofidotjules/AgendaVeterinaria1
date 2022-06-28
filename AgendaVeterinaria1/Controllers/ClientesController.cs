@@ -56,8 +56,9 @@ namespace AgendaVeterinaria1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IDCliente,IDUsuario,Nombre,DNI,Email")] Cliente cliente)
+        public async Task<IActionResult> Create([Bind("IDCliente,Nombre,DNI,Email,Contrasenia")] Cliente cliente)
         {
+            ModelState.Remove("Mascotas");
             if (ModelState.IsValid)
             {
                 _context.Add(cliente);
@@ -88,12 +89,14 @@ namespace AgendaVeterinaria1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IDCliente,IDUsuario,Nombre,DNI,Email")] Cliente cliente)
+        public async Task<IActionResult> Edit(int id, [Bind("IDCliente,Nombre,DNI,Email")] Cliente cliente)
         {
             if (id != cliente.IDCliente)
             {
                 return NotFound();
             }
+
+            ModelState.Remove("Mascotas");
 
             if (ModelState.IsValid)
             {

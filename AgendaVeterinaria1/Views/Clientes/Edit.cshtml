@@ -1,10 +1,10 @@
 ﻿@model AgendaVeterinaria1.Models.Cliente
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Editar Cliente";
 }
 
-<h1>Edit</h1>
+<h1>Editar</h1>
 
 <h4>Cliente</h4>
 <hr />
@@ -13,11 +13,6 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="IDCliente" />
-            <div class="form-group">
-                <label asp-for="IDUsuario" class="control-label"></label>
-                <input asp-for="IDUsuario" class="form-control" />
-                <span asp-validation-for="IDUsuario" class="text-danger"></span>
-            </div>
             <div class="form-group">
                 <label asp-for="Nombre" class="control-label"></label>
                 <input asp-for="Nombre" class="form-control" />
@@ -34,6 +29,15 @@
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Contrasenia" class="control-label"></label>
+                <input asp-for="Contrasenia" class="form-control"/>
+                <span asp-validation-for="Contrasenia" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <a asp-for="Mascotas" class="control-label"> Agregar Mascotas...</a>
+            </div>
+            <div class="form-group">
+                <br />
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
@@ -41,7 +45,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Volver</a>
 </div>
 
 @section Scripts {

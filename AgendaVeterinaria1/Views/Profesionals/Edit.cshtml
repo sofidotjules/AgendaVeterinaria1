@@ -1,13 +1,11 @@
 ﻿@model AgendaVeterinaria1.Models.Profesional
 
 @{
-    ViewData["Title"] = "Editar";
+    ViewData["Title"] = "Editar Profesional";
      List<Especialidad> especialidades = ViewBag.Especialidades;
 }
 
-<h1>Editar</h1>
-
-<h4>Profesional</h4>
+<h4>@ViewBag.Title</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -29,14 +27,16 @@
                 <span asp-validation-for="DNI" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="TipoProfesional" class="control-label"></label>
-                <select asp-for="TipoProfesional" class="form-control">
-                <option value="Veterinaria">Veterinaria</option>
-                <option value="Peluqueria">Peluqueria</option>
-                </select>
-                <span asp-validation-for="TipoProfesional" class="text-danger"></span>
+                     <label asp-for="TipoProfesional" class="control-label"> Tipo de Profesional</label>
+                    <br />
+                    <select asp-for="TipoProfesional" class="browser-default" style="border-bottom:solid #9e9e9e 0.5px">
+                        <option value="Veterinaria">Veterinaria</option>
+                        <option value="Peluqueria">Peluqueria</option>
+                    </select>
 
-            </div>
+                    <span asp-validation-for="TipoProfesional" class="text-danger"></span>
+                </div>
+                <br />
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
                 <input asp-for="Email" class="form-control" />
@@ -49,30 +49,26 @@
             </div>
             <div class="form-group">
                 <label asp-for="Especialidades" class="control-label"></label>
-                <select asp-for="Especialidades" class="form-control" style="height:250px" multiple>
+                <select asp-for="Especialidades" multiple style="display:block; height:250px;border-bottom:solid #9e9e9e 0.5px">
                 @foreach(var item in especialidades){
                     <option value="@item.IDEspecialidad"> @item.Descripcion</option>
                 }
                 </select>
                 <span asp-validation-for="Especialidades" class="text-danger"></span>
             </div>
+            <br />
+            <div class="form-group">
+                <br/>
+                <a asp-for="Agenda" asp-action="Index" asp-controller="Agenda" class="btn waves-light orange lighten-1"><i class="fa fa-address-book" aria-hidden="true"></i>Ir a la Agenda</a>
+            </div>
+             <br/>
+            <input type="submit" value="Guardar" class="btn btn-primary" />
+            <br />
+            <br />
+            <a asp-action="Index" class="btn btn-primary"><i class="fa fa-arrow-left">&nbsp;</i>Volver</a>
 
-            <div class="form-group">
-                <br/>
-                <input type="button" value="Ir a la Agenda" class="btn btn-info" asp-action="GoToAgenda"/>
-            </div>
-            
-            <div class="form-group">
-                <br/>
-                <input type="submit" value="Editar" class="btn btn-primary" />
-            </div>
         </form>
     </div>
-</div>
-
-<div>
-    <br/>
-    <a asp-action="Index">Volver</a>
 </div>
 
 @section Scripts {

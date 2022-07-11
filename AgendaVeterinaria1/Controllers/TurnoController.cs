@@ -153,19 +153,19 @@ namespace AgendaVeterinaria1.Controllers
         // POST: Turno/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id)
         {
             if (_context.Turnos == null)
             {
                 return Problem("Entity set 'AgendaDBContext.Turnos'  is null.");
             }
-            var turno = await _context.Turnos.FindAsync(id);
+            var turno = _context.Turnos.Find(id);
             if (turno != null)
             {
                 _context.Turnos.Remove(turno);
             }
             
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
 
@@ -179,15 +179,16 @@ namespace AgendaVeterinaria1.Controllers
         public IActionResult SolicitarTurno(string? tipoTurno)
         {
             var usuario = HttpContext.Session.GetString("usuario");
-            //if (!User.Identity.IsAuthenticated)
-            //{
-            //    return RedirectToAction("Login", "Home");
-            //}
+            if (usuario == null) {
+                return RedirectToAction("Login", "Home");
+            }
+        
 
             ViewBag.TipoTurno = tipoTurno;
-            ViewData["Mascotas"] = _context.Mascotas;
+            var cliente = _context.Clientes.Include(x=>x.Mascotas).Where(x => x.IDCliente == Convert.ToInt32(usuario)).FirstOrDefault();
+            ViewData["Mascotas"] = cliente.Mascotas;
             ViewData["Especialidades"] = _context.Especialidades;
-            // ViewData["IDProfesional"] = new SelectList(_context.Profesionales, "IDProfesional", "IDProfesional");
+           
             return View();
         }
 
@@ -276,7 +277,7 @@ namespace AgendaVeterinaria1.Controllers
                     IDMascota = idMascota
                 };
                 _context.Add(turno);
-                _context.SaveChangesAsync();
+                _context.SaveChanges();
             }
             catch (Exception ex)
             {

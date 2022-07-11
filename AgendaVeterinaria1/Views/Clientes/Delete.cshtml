@@ -2,13 +2,13 @@
 
 @{
     ViewData["Title"] = "Eliminar Cliente";
+    ViewData["Subtitulo"] = "¿Está seguro que quiere eliminar este Cliente?";
 }
 
-<h1>Eliminar</h1>
+<h3>@ViewBag.Title</h3>
 
-<h3>¿Está seguro que desea eliminarlo?</h3>
+<h4>@ViewBag.Subtitulo</h4>
 <div>
-    <h4>Cliente</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -33,7 +33,10 @@
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="IDCliente" />
-        <input type="submit" value="Borrar" class="btn btn-danger" /> |
-        <a asp-action="Index">Volver</a>
+        <input type="submit" value="Eliminar Cliente" class="btn red darken-1" />
+        <br />
+        <br />
+        <a asp-action="Index" class="btn btn-primary"><i class="fa fa-arrow-left">&nbsp;</i>Volver</a>
     </form>
+
 </div>

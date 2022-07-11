@@ -3,12 +3,12 @@
 <html>
 <head>
 
-      <meta charset="utf-8" />
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - VETERINARIA VETAGEN</title>
-        <script src="https://kit.fontawesome.com/0b6cc95df8.js" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/0b6cc95df8.js" crossorigin="anonymous"></script>
 
-@*    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    @*    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/AgendaVeterinaria1.styles.css" asp-append-version="true" />
     <script src="https://kit.fontawesome.com/0b6cc95df8.js" crossorigin="anonymous"></script>*@
     @*<link href="../Content/css/dx-Calendar-estilos.css" rel="stylesheet" />*@
@@ -85,9 +85,18 @@
                 </div>
                 <div class="float-right">
                     <ul class="navbar-nav">
-                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy"><i class="fa fa-user-circle-o"></i>Ingresar</a>
-                        </li>
+                        @if (Context.Session.GetString("usuario") == null)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy"><i class="fa fa-user-circle-o"></i>Ingresar</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li><a class="nav-link text-dark" href="~/Clientes/Edit?id=@Context.Session.GetString("usuario")"><i class="fa fa-user-circle-o"></i>Mi perfil</a></li>
+                        }
+
+
                     </ul>
                 </div>
             </div>

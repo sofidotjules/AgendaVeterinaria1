@@ -4,9 +4,9 @@
     ViewData["Title"] = "Editar Cliente";
 }
 
-<h1>Editar</h1>
 
-<h4>Cliente</h4>
+<h4>Editar mis datos</h4>
+
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -30,24 +30,29 @@
             </div>
             <div class="form-group">
                 <label asp-for="Contrasenia" class="control-label"></label>
-                <input asp-for="Contrasenia" class="form-control"/>
+                <input asp-for="Contrasenia" class="form-control" />
                 <span asp-validation-for="Contrasenia" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <a asp-for="Mascotas" class="control-label"> Agregar Mascotas...</a>
+                <a asp-for="Mascotas" asp-action="Index" asp-controller="Mascotas" asp-route-id="@Model.IDCliente" class="btn  waves-light  orange lighten-1"><i class="fa fa-paw" aria-hidden="true"></i> Agregar Mascotas</a>
             </div>
-            <div class="form-group">
-                <br />
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
+            <br />
+            <input type="submit" value="Guardar" class="btn btn-primary" />
+            <br />
+            <br />
+            <a asp-action="Index" class="btn btn-primary"><i class="fa fa-arrow-left">&nbsp;</i>Volver</a>
+
+
+
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Volver</a>
-</div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    @{
+
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+
+    }
+        }

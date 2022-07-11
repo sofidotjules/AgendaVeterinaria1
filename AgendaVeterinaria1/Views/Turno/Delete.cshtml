@@ -1,14 +1,14 @@
 ﻿@model AgendaVeterinaria1.Models.Turno
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Eliminar Turno";
+    ViewData["Subtitulo"] = "¿Está seguro que quiere eliminar este Turno?";
 }
 
-<h1>Delete</h1>
+<h3>@ViewBag.Title</h3>
 
-<h3>Are you sure you want to delete this?</h3>
+<h4>@ViewBag.Subtitulo</h4>
 <div>
-    <h4>Turno</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -51,7 +51,9 @@
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="IDTurno" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="submit" value="Eliminar Turno" class="btn red darken-1" />
+        <br />
+        <br />
+        <a asp-action="Index" class="btn btn-primary"><i class="fa fa-arrow-left">&nbsp;</i>Volver</a>
     </form>
 </div>

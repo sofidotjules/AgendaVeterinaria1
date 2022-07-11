@@ -60,22 +60,26 @@ namespace AgendaVeterinaria1.Controllers
         {
 
             var usuario = _context.Clientes.Where(x => x.Email == email && x.Contrasenia == contrasenia).FirstOrDefault();
+            var admin = _context.Profesionales.Where(x => x.Email == email && x.Contrasenia == contrasenia).FirstOrDefault();
 
-
-            if (usuario is null)
+            if (usuario is null && admin is null)
             {
                 ViewBag.Error = "Las credenciales ingresadas son incorrectas. Intente nuevamente o comuniquese con Vetagen";
                 return View();
             }
-
-            //aca se agrega la session
-            HttpContext.Session.SetString("usuario", usuario.IDCliente.ToString());
-            /*HttpContext.Session.GetString("usuario")*/
-
-            /*agregar en startup .AddSession(); .UseSession();*/
-
-           // await SignIn(usuario);
-
+            string tipoUser = "";
+            if (usuario != null)
+            {
+                HttpContext.Session.SetString("usuario", usuario.IDCliente.ToString());
+                tipoUser = "Cliente";
+            }
+            else
+            {
+                HttpContext.Session.SetString("usuario", admin.IDProfesional.ToString());
+                tipoUser = "Admin";
+            }
+            HttpContext.Session.SetString("tipoUsuario", tipoUser);
+            
             return RedirectToAction("Index", "Home");
         }
 

@@ -1,12 +1,11 @@
 ﻿@model AgendaVeterinaria1.Models.Mascota
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Editar Mascota";
 }
 
-<h1>Edit</h1>
+<h4>@ViewBag.Title</h4>
 
-<h4>Mascota</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -19,7 +18,7 @@
                 <span asp-validation-for="Nombre" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="TipoMascota" class="control-label"></label>
+                <label asp-for="TipoMascota" class="control-label">Tipo de Mascota</label>
                 <input asp-for="TipoMascota" class="form-control" />
                 <span asp-validation-for="TipoMascota" class="text-danger"></span>
             </div>
@@ -28,15 +27,14 @@
                 <input asp-for="Detalle" class="form-control" />
                 <span asp-validation-for="Detalle" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
+           <br />
+            <input type="submit" value="Guardar" class="btn btn-primary" />
+            <br />
+            <br />
+            <a asp-action="Index" class="btn btn-primary"><i class="fa fa-arrow-left">&nbsp;</i>Volver</a>
+
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

@@ -62,9 +62,15 @@ namespace AgendaVeterinaria1.Controllers
         {
            
             ModelState.Remove("Especialidades");
-
+            var especialidades = formCollection["Especialidades"];
             if (ModelState.IsValid)
             {
+                foreach (var item in especialidades)
+                {
+                    Especialidad especialidad = _context.Especialidades.Where(x => x.IDEspecialidad == Convert.ToInt32(item)).FirstOrDefault();
+                    profesional.Especialidades.Add(especialidad);
+                }
+
                 _context.Add(profesional);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

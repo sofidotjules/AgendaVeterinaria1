@@ -1,31 +1,31 @@
 ﻿@model IEnumerable<AgendaVeterinaria1.Models.Agenda>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Agendas";
 }
 
-<h1>Index</h1>
+<h4>Agendas</h4>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Agregar Agenda</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.FranjaHoraria)
+                Franja Horaria
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TopeDeTurnos)
+                Tope de Turnos
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FechaDesde)
+                Fecha Disponibilidad Desde
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FechaHasta)
+                Fecha Disponibilidad Hasta
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IDProfesional)
+                Profesional
             </th>
             <th></th>
         </tr>
@@ -46,13 +46,14 @@
                 @Html.DisplayFor(modelItem => item.FechaHasta)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IDProfesional)
+                @Html.DisplayFor(modelItem => item.Profesional.Nombre)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.IDAgenda">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.IDAgenda">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.IDAgenda">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.IDAgenda"><i class="fa fa-pencil" aria-hidden="true"></i></a> |
+                @*<a asp-action="Details" asp-route-id="@item.IDProfesional">Detalles</a> |*@
+                <a asp-action="Delete" asp-route-id="@item.IDAgenda"><i class="fa fa-trash" aria-hidden="true"></i></a>
             </td>
+          
         </tr>
 }
     </tbody>

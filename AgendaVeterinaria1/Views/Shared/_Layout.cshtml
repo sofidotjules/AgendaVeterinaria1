@@ -40,8 +40,16 @@
         <div class="nav-wrapper container">
         <a id="logo-container" href="~/Home" class="brand-logo" style="color:grey">VETAGEN <img src="https://branchsites.cats.org.uk/uploads/branches/138/paws%20up%20(1).png" style="height:50px"></a>
             <ul id="zona-login" class="right hide-on-med-and-down">
-                <li><a class="waves-effect waves-light btn" href="~/Home/Login"><i class="material-icons right">assignment_return</i>Ingresar</a></li>
+                @if (Context.Session.GetString("usuario") == null)
+                {
+                     <li><a class="waves-effect waves-light btn" href="~/Home/Login"><i class="material-icons right">assignment_return</i>Ingresar</a></li>
                 <li><a href="#">Registrarme</a></li>
+                }
+                else
+                {
+                      <li><a class="waves-effect waves-light btn" href="~/Clientes/Edit?id=@Context.Session.GetString("usuario")"><i class="material-icons right">assignment_return</i>Mi perfil</a></li>
+                }
+               
             </ul>
 
         <ul id="nav-mobile" class="sidenav">

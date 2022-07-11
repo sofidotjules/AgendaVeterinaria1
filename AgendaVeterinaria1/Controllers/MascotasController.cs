@@ -22,10 +22,18 @@ namespace AgendaVeterinaria1.Controllers
         }
 
         // GET: Mascotas
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int id=0)
         {
-              return _context.Mascotas != null ? 
-                          View(await _context.Mascotas.ToListAsync()) :
+            if (id== 0)
+            {
+                return _context.Mascotas != null ?
+                         View( await _context.Mascotas.ToListAsync()) :
+                         Problem("Entity set 'AgendaDBContext.Mascotas'  is null.");
+            }
+            var cliente = _context.Clientes.Include(x => x.Mascotas).Where(x => x.IDCliente == id).FirstOrDefault();
+            ViewBag.IDCliente = id;
+            return cliente != null && cliente.Mascotas.Count != 0? 
+                          View(cliente.Mascotas) :
                           Problem("Entity set 'AgendaDBContext.Mascotas'  is null.");
         }
 
@@ -48,8 +56,9 @@ namespace AgendaVeterinaria1.Controllers
         }
 
         // GET: Mascotas/Create
-        public IActionResult Create()
+        public IActionResult Create(int id=0)
         {
+            ViewBag.IDCliente= id;
             return View();
         }
 
@@ -58,14 +67,19 @@ namespace AgendaVeterinaria1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IDMascota,Nombre,TipoMascota,Detalle")] Mascota mascota)
+        public IActionResult Create([Bind("IDMascota,Nombre,TipoMascota,Detalle")] Mascota mascota, IFormCollection formCollection)
         {
+            var idCliente = formCollection["IdCliente"];
+          //  ViewBag.IDCliente = Convert.ToInt32(idCliente);
             if (ModelState.IsValid)
             {
+                var cliente = _context.Clientes.Include(x => x.Mascotas).Where(x => x.IDCliente == Convert.ToInt32(idCliente)).FirstOrDefault();
+                cliente.Mascotas.Add(mascota);
                 _context.Add(mascota);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                _context.SaveChanges();
+                return RedirectToAction("Index", "Mascotas", new { id= Convert.ToInt32(idCliente) });
             }
+            
             return View(mascota);
         }
 
@@ -90,7 +104,7 @@ namespace AgendaVeterinaria1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IDMascota,Nombre,TipoMascota,Detalle")] Mascota mascota)
+        public IActionResult Edit(int id, [Bind("IDMascota,Nombre,TipoMascota,Detalle")] Mascota mascota)
         {
             if (id != mascota.IDMascota)
             {
@@ -102,7 +116,7 @@ namespace AgendaVeterinaria1.Controllers
                 try
                 {
                     _context.Update(mascota);
-                    await _context.SaveChangesAsync();
+                    _context.SaveChanges();
                 }
                 catch (DbUpdateConcurrencyException)
                 {

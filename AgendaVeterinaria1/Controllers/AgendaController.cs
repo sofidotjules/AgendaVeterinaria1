@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace AgendaVeterinaria1.Controllers
 {
-    [Authorize(Roles = "Administrador")]
     public class AgendaController : Controller
     {
         private readonly AgendaDBContext _context;
@@ -25,7 +24,7 @@ namespace AgendaVeterinaria1.Controllers
         public async Task<IActionResult> Index()
         {
               return _context.Agendas != null ? 
-                          View(await _context.Agendas.ToListAsync()) :
+                          View(await _context.Agendas.Include(x=>x.Profesional).ToListAsync()) :
                           Problem("Entity set 'AgendaDBContext.Agendas'  is null.");
         }
 
@@ -57,7 +56,6 @@ namespace AgendaVeterinaria1.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("IDAgenda,FranjaHoraria,TopeDeTurnos,FechaDesde,FechaHasta,IDProfesional")] Agenda agenda)
         {
             if (ModelState.IsValid)
@@ -89,7 +87,6 @@ namespace AgendaVeterinaria1.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("IDAgenda,FranjaHoraria,TopeDeTurnos,FechaDesde,FechaHasta,IDProfesional")] Agenda agenda)
         {
             if (id != agenda.IDAgenda)
@@ -140,7 +137,6 @@ namespace AgendaVeterinaria1.Controllers
 
         // POST: Agenda/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Agendas == null)

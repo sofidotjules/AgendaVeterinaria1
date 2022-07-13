@@ -70,11 +70,12 @@ namespace AgendaVeterinaria1.Controllers
         public IActionResult Create([Bind("IDMascota,Nombre,TipoMascota,Detalle")] Mascota mascota, IFormCollection formCollection)
         {
             var idCliente = formCollection["IdCliente"];
+
           //  ViewBag.IDCliente = Convert.ToInt32(idCliente);
             if (ModelState.IsValid)
             {
+                ViewBag.IDCliente = Convert.ToInt32(idCliente);
                 var cliente = _context.Clientes.Include(x => x.Mascotas).Where(x => x.IDCliente == Convert.ToInt32(idCliente)).FirstOrDefault();
-                cliente.Mascotas.Add(mascota);
                 _context.Add(mascota);
                 _context.SaveChanges();
                 return RedirectToAction("Index", "Mascotas", new { id= Convert.ToInt32(idCliente) });
@@ -92,6 +93,8 @@ namespace AgendaVeterinaria1.Controllers
             }
 
             var mascota = await _context.Mascotas.FindAsync(id);
+            var cliente = _context.Clientes.Where(x => x.Mascotas.Any(x => x.IDMascota == id)).FirstOrDefault();
+            ViewBag.IDCliente = cliente.IDCliente;
             if (mascota == null)
             {
                 return NotFound();
@@ -144,6 +147,9 @@ namespace AgendaVeterinaria1.Controllers
 
             var mascota = await _context.Mascotas
                 .FirstOrDefaultAsync(m => m.IDMascota == id);
+            var cliente = _context.Clientes.Where(x => x.Mascotas.Any(x => x.IDMascota == id)).FirstOrDefault();
+            ViewBag.IDCliente = cliente.IDCliente;
+
             if (mascota == null)
             {
                 return NotFound();
@@ -162,13 +168,22 @@ namespace AgendaVeterinaria1.Controllers
                 return Problem("Entity set 'AgendaDBContext.Mascotas'  is null.");
             }
             var mascota = await _context.Mascotas.FindAsync(id);
+
+            var cliente = _context.Clientes.Where(x => x.Mascotas.Any(x => x.IDMascota == id)).FirstOrDefault();
             if (mascota != null)
             {
+                var turnosRemove = _context.Turnos.Where(x => x.IDMascota == id);
+                foreach (var turno in turnosRemove)
+                {
+                    _context.Turnos.Remove(turno);
+                }
                 _context.Mascotas.Remove(mascota);
             }
             
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Mascotas", new { id = cliente.IDCliente });
+
+            //return RedirectToAction(nameof(Index));
         }
 
         private bool MascotaExists(int id)

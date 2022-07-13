@@ -1,0 +1,106 @@
+﻿@model IEnumerable<AgendaVeterinaria1.Models.Turno>
+
+@{
+    ViewData["Title"] = "Agenda de Turnos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var especialidades = ViewBag.Especialidades;
+    int profesionalId = ViewBag.Id;
+}
+<style>
+    table.striped > tbody > tr:nth-child(odd) {
+    background-color: #0096884d;
+}
+</style>
+
+<h4>Agenda de Turnos</h4>
+<div class="container margen-renglon">
+    <div class="row margen-renglon">
+        <div class="col-md-3">
+        </div>
+        <div class="col-md-6">
+            <div class="row margen-renglon">
+                <div class="col-sm-6">
+                        <label class="control-label"><i class="fa fa-paw"></i>  Seleccioná la especialidad que quieras revisar</label>
+                        <select class="browser-default" style="border-bottom:solid #9e9e9e 0.5px" id="Especialidades" name="Especialidades">
+                            <option value="0">Todas</option>
+                            @foreach (var item in especialidades)
+                            {
+                                <option value="@item.IDEspecialidad"> @item.Descripcion</option>
+                            }
+                        </select>
+                  
+                </div>
+            </div>
+        </div>
+       
+    </div>
+</div>
+
+<table class="striped">
+    <thead>
+        <tr>
+             <th>
+                @Html.DisplayNameFor(model => model.Mascota)
+            </th>
+            <th>
+                Detalle
+            </th>
+            <th>
+                Fecha de Turno
+            </th>
+            <th>
+                Horario Turno
+            </th>
+           
+            <th>
+                @Html.DisplayNameFor(model => model.Profesional)
+            </th>
+            <th>
+                Especialidad
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+             <td>
+                @Html.DisplayFor(modelItem => item.Mascota.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Detalle)
+            </td>
+            <td>
+               @item.Fecha.ToShortDateString()
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Horario)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Profesional.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Especialidad.Descripcion)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.IDTurno"><i class="fa fa-pencil" aria-hidden="true"></i></a> |
+                @*<a asp-action="Details" asp-route-id="@item.IDTurno">Details</a> |*@
+                <a asp-action="Delete" asp-route-id="@item.IDTurno"><i class="fa fa-trash" aria-hidden="true"></i></a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+   
+    $(function() {
+       
+        $('#Especialidades').on('change', '', function(e) {
+            window.location = "AgendaTurnos?especialidadId="+$('#Especialidades').val();
+        });
+
+    });
+
+</script>

@@ -76,19 +76,22 @@ namespace AgendaVeterinaria1.Controllers
         }
 
         // GET: Turno/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int? id)
         {
             if (id == null || _context.Turnos == null)
             {
                 return NotFound();
             }
 
-            var turno = await _context.Turnos.FindAsync(id);
+            var turno = _context.Turnos.Include(x => x.Mascota).FirstOrDefault(x => x.IDTurno == id);
+
             if (turno == null)
             {
                 return NotFound();
             }
-            ViewData["IDCliente"] = new SelectList(_context.Clientes, "IDCliente", "IDCliente", turno.IDMascota);
+            var cliente = _context.Clientes.Where(x => x.Mascotas.Any(x => x.IDMascota == turno.IDMascota)).FirstOrDefault();
+
+            ViewData["Cliente"] = cliente.Nombre + " - Contacto: " + cliente.Email;
             ViewData["IDProfesional"] = new SelectList(_context.Profesionales, "IDProfesional", "IDProfesional", turno.IDProfesional);
             return View(turno);
         }
@@ -169,6 +172,50 @@ namespace AgendaVeterinaria1.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public async Task<IActionResult> AgendaTurnos(int especialidadId=0)
+        {
+            var usuario = HttpContext.Session.GetString("usuario");
+            var tipoUsuario = HttpContext.Session.GetString("tipoUsuario");
+
+            if (usuario == null || !tipoUsuario.Equals("Admin"))
+            {
+                return RedirectToAction("Login", "Home");
+            }
+
+
+            var profesional = _context.Profesionales.Include(x => x.Especialidades).Where(x => x.IDProfesional == Convert.ToInt32(usuario)).FirstOrDefault();
+            var agendaDBContext = _context.Turnos.Include(t => t.Mascota).Include(t => t.Profesional).Include(x => x.Especialidad).Where(x => x.IDProfesional == Convert.ToInt32(usuario));
+            if (especialidadId !=0 )
+            {
+                agendaDBContext = _context.Turnos.Include(t => t.Mascota).Include(t => t.Profesional).Include(x => x.Especialidad).Where(x => x.IDProfesional == Convert.ToInt32(usuario) && x.IDEspecialidad==especialidadId);
+            }
+            
+            ViewData["Especialidades"] = profesional.Especialidades;
+            ViewBag.Id = Convert.ToInt32(usuario);
+            
+            return View(await agendaDBContext.ToListAsync());
+
+            //return View();
+        }
+
+        // POST: Turno/Delete/5
+        [HttpPost]
+        public IActionResult AgendaTurnos()
+        {
+            if (_context.Turnos == null)
+            {
+                return Problem("Entity set 'AgendaDBContext.Turnos'  is null.");
+            }
+          //  var turno = _context.Turnos.Find(id);
+           // if (turno != null)
+          //  {
+          //      _context.Turnos.Remove(turno);
+          //  }
+
+           // _context.SaveChanges();
+            return RedirectToAction(nameof(Index));
+        }
+
         private bool TurnoExists(int id)
         {
           return (_context.Turnos?.Any(e => e.IDTurno == id)).GetValueOrDefault();
@@ -179,7 +226,9 @@ namespace AgendaVeterinaria1.Controllers
         public IActionResult SolicitarTurno(string? tipoTurno)
         {
             var usuario = HttpContext.Session.GetString("usuario");
-            if (usuario == null) {
+            var tipoUsuario = HttpContext.Session.GetString("tipoUsuario");
+
+            if (usuario == null || tipoUsuario.Equals("Admin")) {
                 return RedirectToAction("Login", "Home");
             }
         

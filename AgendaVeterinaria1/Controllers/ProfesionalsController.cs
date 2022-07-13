@@ -92,6 +92,7 @@ namespace AgendaVeterinaria1.Controllers
             {
                 return NotFound();
             }
+            ViewBag.Id = id;
             return View(profesional);
         }
 
@@ -100,13 +101,14 @@ namespace AgendaVeterinaria1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IDProfesional,Matricula,Nombre,DNI,TipoProfesional,Email")] Profesional profesional, IFormCollection formCollection)
+        public IActionResult Edit(int id, [Bind("IDProfesional,Matricula,Nombre,DNI,TipoProfesional,Email")] Profesional profesional, IFormCollection formCollection)
         {
-            Profesional buscar = _context.Profesionales.Where(x => x.Matricula == profesional.Matricula).FirstOrDefault();
-            if (id != buscar.IDProfesional)
-            {
-                return NotFound();
-            }
+            profesional = _context.Profesionales.Include(x=>x.Especialidades).Where(x => x.Matricula == profesional.Matricula).FirstOrDefault();
+    
+            ModelState.Remove("Contrasenia");
+            id = profesional.IDProfesional;
+            var oldPass = _context.Profesionales.AsNoTracking().FirstOrDefault(x => x.IDProfesional == id).Contrasenia;
+
 
             var especialidades = formCollection["Especialidades"];
             ModelState.Remove("Especialidades");
@@ -121,9 +123,9 @@ namespace AgendaVeterinaria1.Controllers
                         Especialidad especialidad = _context.Especialidades.Where(x => x.IDEspecialidad == Convert.ToInt32(item)).FirstOrDefault();
                         profesional.Especialidades.Add(especialidad);
                     }
-
+                    profesional.Contrasenia = oldPass;
                     _context.Update(profesional);
-                    await _context.SaveChangesAsync();
+                   _context.SaveChanges();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -136,7 +138,7 @@ namespace AgendaVeterinaria1.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index","Home");
             }
             return View(profesional);
         }

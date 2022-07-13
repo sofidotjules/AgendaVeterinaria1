@@ -28,11 +28,11 @@
                 <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            @*<div class="form-group">
                 <label asp-for="Contrasenia" class="control-label"></label>
                 <input asp-for="Contrasenia" class="form-control" />
                 <span asp-validation-for="Contrasenia" class="text-danger"></span>
-            </div>
+            </div>*@
             <div class="form-group">
                 <a asp-for="Mascotas" asp-action="Index" asp-controller="Mascotas" asp-route-id="@Model.IDCliente" class="btn  waves-light  orange lighten-1"><i class="fa fa-paw" aria-hidden="true"></i> Agregar Mascotas</a>
             </div>

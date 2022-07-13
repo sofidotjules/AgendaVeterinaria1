@@ -90,19 +90,19 @@ namespace AgendaVeterinaria1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IDCliente,Nombre,DNI,Email")] Cliente cliente)
+        public async Task<IActionResult> Edit(int? id, [Bind("IDCliente,Nombre,DNI,Email")] Cliente cliente)
         {
-            if (id != cliente.IDCliente)
-            {
-                return NotFound();
-            }
-
+           
             ModelState.Remove("Mascotas");
-
+            ModelState.Remove("Contrasenia");
+            id = cliente.IDCliente;
+            var oldPass = _context.Clientes.AsNoTracking().FirstOrDefault(x => x.IDCliente == id).Contrasenia;
             if (ModelState.IsValid)
             {
                 try
                 {
+                    
+                    cliente.Contrasenia = oldPass;
                     _context.Update(cliente);
                     await _context.SaveChangesAsync();
                 }
@@ -117,7 +117,7 @@ namespace AgendaVeterinaria1.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index","Home");
             }
             return View(cliente);
         }
